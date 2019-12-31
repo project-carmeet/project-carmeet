@@ -7,7 +7,7 @@ services:
             - "${MYSQL_PORT}:3306"
         environment:
             MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: http-status-checker
+            MYSQL_DATABASE: project-carmeet
             MYSQL_USER: symfony
             MYSQL_PASSWORD: symfony
     php:
@@ -16,7 +16,6 @@ services:
             - ./:/application
         links:
             - db
-            - redis
     nginx:
         image: nginx
         ports:
