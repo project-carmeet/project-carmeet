@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use BadMethodCallException;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -15,33 +16,42 @@ class User implements UserInterface
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=false)
      *
      * @var string $id
      */
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=false)
      *
      * @var string
      */
     protected $username;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=false)
      *
      * @var string
+     */
+    protected $email;
+
+    /**
+     * @ORM\Column(type="string", nullable=false)
+     *
+     * @var string|null
      */
     protected $password;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     *
      * @var string|null
      */
     protected $salt;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="array", nullable=false)
      *
      * @var array<int, string>
      */
@@ -50,12 +60,18 @@ class User implements UserInterface
     /**
      * @param array<int, string> $roles
      */
-    public function __construct(string $username, string $password, ?string $salt, array $roles)
+    public function __construct(string $username, string $email, ?string $password = null, ?string $salt = null, array $roles = [])
     {
         $this->username = $username;
         $this->password = $password;
+        $this->email = $email;
         $this->salt = $salt;
         $this->roles = $roles;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     /**
@@ -71,11 +87,25 @@ class User implements UserInterface
         $this->username = $username;
     }
 
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
     /**
      * @inheritDoc
      */
     public function getPassword(): string
     {
+        if (null === $this->password) {
+            throw new BadMethodCallException('No password set. Use setPassword to set a password first.');
+        }
+
         return $this->password;
     }
 
