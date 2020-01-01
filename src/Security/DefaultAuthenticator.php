@@ -101,7 +101,7 @@ final class DefaultAuthenticator extends AbstractFormLoginAuthenticator
         return $this->encoder->isPasswordValid($user, $credentials['password']);
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): Response
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): Response
     {
         $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
         if ($targetPath) {
