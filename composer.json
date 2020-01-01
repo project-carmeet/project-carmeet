@@ -1,4 +1,6 @@
 {
+    "name": "project-carmeet/project-carmeet",
+    "description": "A platform for organizing and participating in carmeets and for sharing the love for cars.",
     "type": "project",
     "license": "proprietary",
     "require": {
