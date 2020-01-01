@@ -1,0 +1,39 @@
+@for $i from 10 through 60 {
+  @if $i % 5 == 0 {
+    .mb-#{$i} {
+      margin-bottom: #{$i}px;
+    }
+
+    .mt-#{$i} {
+      margin-top: #{$i}px;
+    }
+
+    .pb-#{$i} {
+      padding-bottom: #{$i}px;
+    }
+
+    .pt-#{$i} {
+      padding-top: #{$i}px;
+    }
+  }
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+.font-italic {
+  font-style: italic;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
