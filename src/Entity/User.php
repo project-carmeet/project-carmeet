@@ -9,7 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Table(indexes={@ORM\Index(columns={"username"}), @ORM\Index(columns={"email"})})
  */
 class User implements UserInterface
 {

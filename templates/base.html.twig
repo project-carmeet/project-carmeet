@@ -20,7 +20,17 @@
     {% endblock %}
 </head>
 <body>
+
+{% block flashbag_messages %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <h5>{{ label }}: {{ message }}</h5>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}
+
 {% block body %}{% endblock %}
+
 {% block javascripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>

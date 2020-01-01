@@ -8,5 +8,6 @@
         <h3>You are logged in as {{ app.user.username }}, if you do not like this click <a href="{{ path('app_logout') }}">here</a>.</h3>
     {% else %}
         <h3>To login click <a href="{{ path('app_login') }}">here</a>.</h3>
+        <h3>To register click <a href="{{ path('app_register') }}">here</a>.</h3>
     {% endif %}
 {% endblock %}
