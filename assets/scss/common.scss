@@ -1,0 +1,13 @@
+// Imports
+@import "variables";
+@import "mixins";
+@import "util";
+
+// Atoms
+@import "atoms/typography";
+
+body {
+  background: $bg-body;
+  color: $color-light;
+  font-family: $font-family-base;
+}
