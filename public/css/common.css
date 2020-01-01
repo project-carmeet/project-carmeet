@@ -198,7 +198,7 @@ h1 {
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
 }
-@media only screen and (min-width: 0) and (max-width: 575.98px) {
+@media only screen and (max-width: 575.98px) {
   h1 {
     font-size: 28px;
   }
@@ -208,7 +208,7 @@ h2 {
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
 }
-@media only screen and (min-width: 0) and (max-width: 575.98px) {
+@media only screen and (max-width: 575.98px) {
   h2 {
     font-size: 24px;
   }
@@ -218,7 +218,7 @@ h3 {
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
 }
-@media only screen and (min-width: 0) and (max-width: 575.98px) {
+@media only screen and (max-width: 575.98px) {
   h3 {
     font-size: 21px;
   }
@@ -228,7 +228,7 @@ h4 {
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
 }
-@media only screen and (min-width: 0) and (max-width: 575.98px) {
+@media only screen and (max-width: 575.98px) {
   h4 {
     font-size: 16px;
   }

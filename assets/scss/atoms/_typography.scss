@@ -2,7 +2,7 @@ h1 {
   font-family: $font-family-headers;
   font-weight: $font-weight-bold;
 
-  @include breakpoint(0, $break-sm--min) {
+  @include breakpoint(false, $break-sm--min) {
     font-size: $font-size-small * 2;
   }
 }
@@ -11,7 +11,7 @@ h2 {
   font-family: $font-family-headers;
   font-weight: $font-weight-bold;
 
-  @include breakpoint(0, $break-sm--min) {
+  @include breakpoint(false, $break-sm--min) {
     font-size: $font-size-h3;
   }
 }
@@ -20,7 +20,7 @@ h3 {
   font-family: $font-family-headers;
   font-weight: $font-weight-bold;
 
-  @include breakpoint(0, $break-sm--min) {
+  @include breakpoint(false, $break-sm--min) {
     font-size: $font-size-h4;
   }
 }
@@ -29,7 +29,7 @@ h4 {
   font-family: $font-family-headers;
   font-weight: $font-weight-bold;
 
-  @include breakpoint(0, $break-sm--min) {
+  @include breakpoint(false, $break-sm--min) {
     font-size: $font-size-base;
   }
 }
