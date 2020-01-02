@@ -4,7 +4,12 @@
 @import "util";
 
 // Atoms
+@import "atoms/buttons";
 @import "atoms/typography";
+
+// Organisms
+@import "organisms/jumbotron";
+@import "organisms/navbar";
 
 body {
   background: $bg-body;

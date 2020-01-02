@@ -3,7 +3,29 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-    <h1>Stop there!</h1>
+    {% include 'homepage/_jumbotron_homepage.html.twig' %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-20">
+                <h2>Carmeets deze week</h2>
+                <p class="font-italic color-subtle small">Alle car meetings van de komende 7 dagen.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-20">
+                <h2>Nieuwste carmeets</h2>
+                <p class="font-italic color-subtle small">De meest recent toegevoegde carmeets.</p>
+            </div>
+        </div>
+    </div>
+
+    {% include 'homepage/_jumbotron_homepage_inline.html.twig' %}
+
+    {# OLD DEMO STUFF BELOW #}
     {% if app.user %}
         <h3>You are logged in as {{ app.user.username }}, if you do not like this click <a href="{{ path('app_logout') }}">here</a>.</h3>
     {% else %}

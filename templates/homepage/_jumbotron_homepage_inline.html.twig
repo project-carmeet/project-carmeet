@@ -1,0 +1,24 @@
+{% extends 'shared/jumbotron/_jumbotron.html.twig' %}
+
+{% block picture %}
+    {% import 'macro/_picture_element.html.twig' as picture %}
+    {{ picture.picture_element(
+        'homepagina jumbotron background',
+        'images/hero/hero_xl.jpg',
+        'images/hero/hero_lg.jpg',
+        'images/hero/hero_md.jpg',
+        'images/hero/hero_xs.jpg'
+    ) }}
+{% endblock %}
+
+{% block title %}
+    <h2 class="text-center">Zelf een carmeet organiseren?</h2>
+{% endblock %}
+{% block subtext %}
+    <p class="text-center font-italic color-subtle mb-30">Naast het vinden van carmeets kan je ook zelf een carmeet organiseren. <br> Interesse? Maak gratis een account aan!</p>
+{% endblock %}
+{% block buttons %}
+    <div class="col-12 text-center">
+        <a href="#" class="btn btn-primary">Gratis account aanmaken</a>
+    </div>
+{% endblock %}

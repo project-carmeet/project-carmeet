@@ -1,0 +1,8 @@
+{% macro picture_element(image_title, xl, lg, md, xs) %}
+    <picture>
+        <source media="(min-width: 1601px)" srcset="{{ lg }}, {{ xl }} 2x">
+        <source media="(max-width: 1600px)" srcset="{{ md }}, {{ lg }} 2x">
+        <source media="(max-width: 650px)" srcset="{{ xs }}, {{ md }} 2x">
+        <img src="{{ xs }}" alt="{{ image_title }}">
+    </picture>
+{% endmacro %}

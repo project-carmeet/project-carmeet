@@ -18,16 +18,32 @@
   }
 }
 
+@for $i from 5 through 20 {
+  @if $i % 5 == 0 {
+    .mr-#{$i} {
+      margin-right: #{$i}px;
+    }
+
+    .ml-#{$i} {
+      margin-left: #{$i}px;
+    }
+
+    .pr-#{$i} {
+      padding-right: #{$i}px;
+    }
+
+    .pl-#{$i} {
+      padding-left: #{$i}px;
+    }
+  }
+}
+
 .no-padding {
   padding: 0 !important;
 }
 
 .no-margin {
   margin: 0 !important;
-}
-
-.font-italic {
-  font-style: italic;
 }
 
 .text-capitalize {

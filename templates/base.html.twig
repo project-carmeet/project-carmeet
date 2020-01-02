@@ -21,6 +21,15 @@
 </head>
 <body>
 
+{% block header %}
+    <nav class="navbar">
+        <a class="navbar-brand" href="#">
+            <img src="{{ asset('images/logo.png') }}" alt="Project Carmeet">
+        </a>
+    </nav>
+{% endblock %}
+
+{#TODO: move flashbag_messages to proper position / template #}
 {% block flashbag_messages %}
     {% for label, messages in app.flashes %}
         {% for message in messages %}
