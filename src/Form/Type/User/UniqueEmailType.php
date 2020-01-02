@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Form\Type\User;
 
-use App\Model\Form\UserModel;
 use App\Repository\UserRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-final class RegistrationType extends AbstractType
+final class UniqueEmailType extends AbstractType
 {
     /**
      * @var UserRepository
@@ -23,26 +24,21 @@ final class RegistrationType extends AbstractType
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * @param array<mixed> $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function getParent(): string
     {
-        $builder->add('username', UniqueUsernameType::class);
-
-        $builder->add('email', UniqueEmailType::class);
-
-        $builder->add('password', RepeatedPasswordType::class);
+        return EmailType::class;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => UserModel::class,
-            'required' => false,
+            'label' => 'Email',
+            'constraints' => [
+                new NotBlank(),
+                new Callback([
+                    'callback' => [$this, 'validateEmail'],
+                ]),
+            ],
         ]);
     }
 
