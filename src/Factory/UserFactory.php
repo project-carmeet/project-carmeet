@@ -6,14 +6,13 @@ namespace App\Factory;
 
 use App\Entity\User;
 use App\Model\Form\UserModel;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use UnexpectedValueException;
 
 final class UserFactory
 {
     /**
-     * @var UserPasswordEncoder
+     * @var UserPasswordEncoderInterface
      */
     protected $encoder;
 
@@ -35,7 +34,7 @@ final class UserFactory
         }
 
         $email = $userModel->getEmail();
-        if (null === $plainPassword) {
+        if (null === $email) {
             throw new UnexpectedValueException('Expected email to be set but null was found.');
         }
 

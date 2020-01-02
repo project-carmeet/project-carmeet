@@ -1,0 +1,45 @@
+name: Build
+
+on: [pull_request]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        services:
+            mysql:
+                image: mysql:5.7
+                env:
+                    MYSQL_ALLOW_EMPTY_PASSWORD: false
+                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_DATABASE: project-carmeet
+                ports:
+                    - 3306
+        steps:
+            -   name: Setup PHP, with composer and extensions
+                uses: shivammathur/setup-php@v1
+                with:
+                    php-version: 7.4
+                    extension-csv: mbstring, xml, ctype, iconv, mysql, curl, intl
+                    coverage: pcov
+
+            -   uses: actions/checkout@v1
+
+            -   name: Validate composer.json and composer.lock
+                run: |
+                    composer clear-cache
+                    composer validate
+
+            -   name: Install dependencies
+                run: |
+                    composer install --prefer-dist --no-progress --no-suggest
+
+            -   name: Run Migration
+                run: |
+                    php bin/console doctrine:schema:update --force || echo "No migrations found or schema update failed"
+                    php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
+                env:
+                    DATABASE_URL: mysql://root:root@127.0.0.1:3306/symfony
+
+            -   name: PHP Stan
+                run: |
+                    composer run phpstan

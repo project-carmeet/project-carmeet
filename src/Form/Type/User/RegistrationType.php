@@ -29,7 +29,7 @@ final class RegistrationType extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * @param array<mixed> $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
