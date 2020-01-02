@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Event\User\ForgotPasswordEvent;
 use App\Factory\UserFactory;
+use App\Form\Type\User\ForgotPasswordType;
 use App\Form\Type\User\RegistrationType;
+use App\Model\Form\ForgotPasswordModel;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class SecurityController extends AbstractController
 {
@@ -55,6 +60,44 @@ final class SecurityController extends AbstractController
         return $this->render('security/register.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/forgot-password", name="app_security_forgot_password")
+     */
+    public function forgotPassword(Request $request, EventDispatcherInterface $eventDispatcher, UserRepository $userRepository): Response
+    {
+        $form = $this->createForm(ForgotPasswordType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var ForgotPasswordModel $data */
+            $data = $form->getData();
+
+            $user = $userRepository->findOneOrNullByEmail($data->getEmail());
+            if (null !== $user) {
+                $eventDispatcher->dispatch(new ForgotPasswordEvent($user));
+            }
+
+            $this->addFlash('success', 'If an account for this email exists, you should receive an email soon.');
+            $form = $this->createForm(ForgotPasswordType::class);
+        }
+
+        return $this->render('security/forgot_password.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/change-password/{token}", name="app_security_change_password")
+     */
+    public function changePassword(string $token, UserRepository $userRepository): Response
+    {
+        dd($token, $userRepository->findOneOrNullByForgotPasswordToken($token));
+
+        // TODO: implement this method to acctually show the form and handle the change
+
+        return new Response('TODO');
     }
 
     /**

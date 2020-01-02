@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Model\ForgotPasswordAware;
 use BadMethodCallException;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -12,7 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(indexes={@ORM\Index(columns={"username"}), @ORM\Index(columns={"email"})})
  */
-class User implements UserInterface
+class User implements UserInterface, ForgotPasswordAware
 {
     /**
      * @ORM\Id()
@@ -57,6 +59,20 @@ class User implements UserInterface
      * @var array<int, string>
      */
     protected $roles;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string|null
+     */
+    protected $forgotPasswordToken;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     *
+     * @var DateTimeInterface|null
+     */
+    protected $forgotPasswordTimestamp;
 
     /**
      * @param array<int, string> $roles
@@ -142,6 +158,38 @@ class User implements UserInterface
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getForgotPasswordToken(): ?string
+    {
+        return $this->forgotPasswordToken;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setForgotPasswordToken(?string $forgotPasswordToken): void
+    {
+        $this->forgotPasswordToken = $forgotPasswordToken;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getForgotPasswordTimestamp(): ?DateTimeInterface
+    {
+        return $this->forgotPasswordTimestamp;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setForgotPasswordTimestamp(?DateTimeInterface $forgotPasswordTimestamp): void
+    {
+        $this->forgotPasswordTimestamp = $forgotPasswordTimestamp;
     }
 
     /**

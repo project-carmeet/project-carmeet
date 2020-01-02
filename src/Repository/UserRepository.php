@@ -28,4 +28,11 @@ final class UserRepository extends ServiceEntityRepository
             'email' => $email,
         ]);
     }
+
+    public function findOneOrNullByForgotPasswordToken(string $token): ?User
+    {
+        return $this->findOneBy([
+            'forgotPasswordToken' => $token,
+        ]);
+    }
 }
