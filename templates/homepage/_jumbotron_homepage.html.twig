@@ -4,19 +4,21 @@
     {% import 'macro/_picture_element.html.twig' as picture %}
     {{ picture.picture_element(
         'homepagina jumbotron background',
-        'images/hero/hero_xl.jpg',
-        'images/hero/hero_lg.jpg',
-        'images/hero/hero_md.jpg',
         'images/hero/hero_xs.jpg'
+        'images/hero/hero_md.jpg',
+        'images/hero/hero_lg.jpg',
+        'images/hero/hero_xl.jpg',
     ) }}
 {% endblock %}
 
 {% block title %}
     <h1 class="text-center mt-4">Carmeetings zoeken</h1>
 {% endblock %}
+
 {% block subtext %}
     <p class="text-center font-italic color-subtle mb-30">Zoek gemakkelijk en snel carmeets bij jouw in de buurt</p>
 {% endblock %}
+
 {% block buttons %}
     <div class="col-12 col-md-6 col-lg-4 offset-lg-2 mb-10">
         <a href="#" class="btn btn-primary btn-block"><i class="fas fa-search pr-10"></i>Carmeet zoeken</a>
