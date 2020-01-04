@@ -1,0 +1,22 @@
+.jumbotron {
+  overflow: hidden;
+  position: relative;
+
+  img {
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .jumbotron__overlay {
+    background: $bg-jumbotron-overlay;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}

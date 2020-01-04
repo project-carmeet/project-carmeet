@@ -1,0 +1,48 @@
+.btn {
+  padding: 14px 16px;
+  border-radius: 10px;
+
+  &.btn-primary {
+    background-color: $bg-button--primary;
+    border-color: $bg-button--primary;
+    font-weight: $font-weight-medium;
+
+    &:hover {
+      background-color: darken($bg-button--primary, 15%);
+      border-color: darken($bg-button--primary, 15%);
+    }
+
+    &:not(:disabled):active {
+      background-color: lighten($bg-button--primary, 15%);
+      border-color: lighten($bg-button--primary, 15%);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem transparentize($bg-button--primary, 0.5);
+    }
+
+    .fas {
+      color: $bg-button--secondary;
+    }
+  }
+
+  &.btn-secondary {
+    background-color: $bg-button--secondary;
+    border-color: $bg-button--secondary;
+    font-weight: $font-weight-medium;
+
+    &:hover {
+      background-color: darken($bg-button--secondary, 5%);
+      border-color: darken($bg-button--secondary, 5%);
+    }
+
+    &:not(:disabled):active {
+      background-color: lighten($bg-button--secondary, 5%);
+      border-color: lighten($bg-button--secondary, 5%);
+    }
+
+    .fas {
+      color: $bg-button--primary;
+    }
+  }
+}
