@@ -1,0 +1,17 @@
+<div class="jumbotron jumbotron-fluid">
+    {% block picture %}{% endblock %}
+    {% block hero_overlay %}
+        <div class="jumbotron__overlay"></div>
+    {% endblock %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% block title %}{% endblock %}
+                {% block subtext %}{% endblock %}
+            </div>
+        </div>
+        <div class="row">
+            {% block buttons %}{% endblock %}
+        </div>
+    </div>
+</div>

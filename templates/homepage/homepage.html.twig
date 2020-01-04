@@ -3,9 +3,118 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-    <h1>Stop there!</h1>
+    {% include 'homepage/_jumbotron_homepage.html.twig' %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2>Carmeets deze week</h2>
+                <p class="font-italic color-subtle small">Alle car meetings van de komende 7 dagen.</p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="event-card-container mb-30">
+            <div class="event-card-wrapper">
+                {#TODO: replace test events with real data#}
+                {% include 'shared/cards/_event_card.html.twig' with {
+                    title: 'Test event',
+                    description: '20:00 / 23:00 uur - Rotterdam',
+                    image: 'images/hero/hero_xs.jpg',
+                    image_alt: 'test event',
+                    route: path('app_homepage'),
+                } %}
+
+                {% include 'shared/cards/_event_card.html.twig' with {
+                    title: 'Test event',
+                    description: '20:00 / 23:00 uur - Rotterdam',
+                    image: 'images/hero/hero_xs.jpg',
+                    image_alt: 'test event',
+                    route: path('app_homepage'),
+                } %}
+
+                {% include 'shared/cards/_event_card.html.twig' with {
+                    title: 'Test event',
+                    description: '20:00 / 23:00 uur - Rotterdam',
+                    image: 'images/hero/hero_xs.jpg',
+                    image_alt: 'test event',
+                    route: path('app_homepage'),
+                } %}
+
+                {% include 'shared/cards/_event_card.html.twig' with {
+                    title: 'Test event',
+                    description: '20:00 / 23:00 uur - Rotterdam',
+                    image: 'images/hero/hero_xs.jpg',
+                    image_alt: 'test event',
+                    route: path('app_homepage'),
+                } %}
+
+                {% include 'shared/cards/_event_action_card.html.twig' with {
+                    title: 'Bekijk alle events',
+                    route: path('app_homepage'),
+                } %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2>Nieuwste carmeets</h2>
+                <p class="font-italic color-subtle small">De meest recent toegevoegde carmeets.</p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="event-card-container mb-30">
+            <div class="event-card-wrapper">
+                {#TODO: replace test events with real data#}
+                {% include 'shared/cards/_event_card.html.twig' with {
+                    title: 'Test event',
+                    description: '20:00 / 23:00 uur - Rotterdam',
+                    image: 'images/hero/hero_xs.jpg',
+                    image_alt: 'test event',
+                    route: path('app_homepage'),
+                } %}
+
+                {% include 'shared/cards/_event_card.html.twig' with {
+                    title: 'Test event',
+                    description: '20:00 / 23:00 uur - Rotterdam',
+                    image: 'images/hero/hero_xs.jpg',
+                    image_alt: 'test event',
+                    route: path('app_homepage'),
+                } %}
+
+                {% include 'shared/cards/_event_card.html.twig' with {
+                    title: 'Test event',
+                    description: '20:00 / 23:00 uur - Rotterdam',
+                    image: 'images/hero/hero_xs.jpg',
+                    image_alt: 'test event',
+                    route: path('app_homepage'),
+                } %}
+
+                {% include 'shared/cards/_event_card.html.twig' with {
+                    title: 'Test event',
+                    description: '20:00 / 23:00 uur - Rotterdam',
+                    image: 'images/hero/hero_xs.jpg',
+                    image_alt: 'test event',
+                    route: path('app_homepage'),
+                } %}
+
+                {% include 'shared/cards/_event_action_card.html.twig' with {
+                    title: 'Bekijk alle events',
+                    route: path('app_homepage'),
+                } %}
+            </div>
+        </div>
+    </div>
+
+    {% include 'homepage/_jumbotron_homepage_inline.html.twig' %}
+
+    {# OLD DEMO STUFF BELOW #}
     {% if app.user %}
-        <h3>You are logged in as {{ app.user.username }}, if you do not like this click <a href="{{ path('app_logout') }}">here</a>.</h3>
+        <h3>You are logged in as {{ app.user.username }}, if you do not like this click <a
+                    href="{{ path('app_logout') }}">here</a>.</h3>
     {% else %}
         <h3>To login click <a href="{{ path('app_login') }}">here</a>.</h3>
         <h3>To register click <a href="{{ path('app_register') }}">here</a>.</h3>

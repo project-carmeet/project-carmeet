@@ -1,0 +1,20 @@
+.navbar {
+  @include breakpoint($break-lg, false) {
+    min-height: 70px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+  }
+
+  .navbar-brand {
+    width: 100%;
+
+    @include breakpoint(false, $break-lg--min) {
+      text-align: center;
+    }
+
+    img {
+      width: 160px;
+    }
+  }
+}

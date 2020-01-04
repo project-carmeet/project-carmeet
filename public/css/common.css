@@ -174,16 +174,76 @@
   padding-top: 60px;
 }
 
+.mr-5 {
+  margin-right: 5px;
+}
+
+.ml-5 {
+  margin-left: 5px;
+}
+
+.pr-5 {
+  padding-right: 5px;
+}
+
+.pl-5 {
+  padding-left: 5px;
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.ml-10 {
+  margin-left: 10px;
+}
+
+.pr-10 {
+  padding-right: 10px;
+}
+
+.pl-10 {
+  padding-left: 10px;
+}
+
+.mr-15 {
+  margin-right: 15px;
+}
+
+.ml-15 {
+  margin-left: 15px;
+}
+
+.pr-15 {
+  padding-right: 15px;
+}
+
+.pl-15 {
+  padding-left: 15px;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+.pr-20 {
+  padding-right: 20px;
+}
+
+.pl-20 {
+  padding-left: 20px;
+}
+
 .no-padding {
   padding: 0 !important;
 }
 
 .no-margin {
   margin: 0 !important;
-}
-
-.font-italic {
-  font-style: italic;
 }
 
 .text-capitalize {
@@ -194,9 +254,50 @@
   text-transform: uppercase;
 }
 
+.btn {
+  padding: 14px 16px;
+  border-radius: 10px;
+}
+.btn.btn-primary {
+  background-color: #F97A2b;
+  border-color: #F97A2b;
+  font-weight: 500;
+}
+.btn.btn-primary:hover {
+  background-color: #d25406;
+  border-color: #d25406;
+}
+.btn.btn-primary:not(:disabled):active {
+  background-color: #fba975;
+  border-color: #fba975;
+}
+.btn.btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(249, 122, 43, 0.5);
+}
+.btn.btn-primary .fas {
+  color: #242A36;
+}
+.btn.btn-secondary {
+  background-color: #242A36;
+  border-color: #242A36;
+  font-weight: 500;
+}
+.btn.btn-secondary:hover {
+  background-color: #1a1e27;
+  border-color: #1a1e27;
+}
+.btn.btn-secondary:not(:disabled):active {
+  background-color: #2e3645;
+  border-color: #2e3645;
+}
+.btn.btn-secondary .fas {
+  color: #F97A2b;
+}
+
 h1 {
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
+  margin-bottom: 0;
 }
 @media only screen and (max-width: 575.98px) {
   h1 {
@@ -207,6 +308,7 @@ h1 {
 h2 {
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
+  margin-bottom: 0;
 }
 @media only screen and (max-width: 575.98px) {
   h2 {
@@ -217,6 +319,7 @@ h2 {
 h3 {
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
+  margin-bottom: 0;
 }
 @media only screen and (max-width: 575.98px) {
   h3 {
@@ -227,6 +330,7 @@ h3 {
 h4 {
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
+  margin-bottom: 0;
 }
 @media only screen and (max-width: 575.98px) {
   h4 {
@@ -239,6 +343,119 @@ a {
 }
 a:hover {
   color: #d25406;
+}
+
+p.color-subtle {
+  color: #A1A1A1;
+}
+p.small {
+  font-size: 14px;
+}
+
+.card {
+  background-color: #161A25;
+  border: none;
+  border-radius: 0;
+  color: #FFFFFF;
+}
+.card:hover {
+  box-shadow: rgba(0, 0, 0, 0.5) 0 5px 10px 2px;
+  text-decoration: none;
+}
+.card .card-body {
+  padding: 15px;
+}
+.card .card-body .card-title {
+  margin-bottom: 0;
+}
+.card .card-body .card-text {
+  font-size: 14px;
+}
+.card--action {
+  background: #161A25;
+  color: #F97A2b;
+  font-weight: 700;
+  text-align: center;
+}
+
+.event-card-container {
+  width: 100%;
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+}
+.event-card-container::-webkit-scrollbar {
+  display: none;
+}
+@media only screen and (max-width: 767.98px) {
+  .event-card-container .event-card-wrapper {
+    min-width: 2500px;
+    -webkit-backface-visibility: hidden;
+  }
+}
+.event-card-container .event-card-wrapper .event-card {
+  display: inline-block;
+  width: 250px;
+  margin-right: 10px;
+  float: left;
+}
+@media only screen and (min-width: 768px) and (max-width: 991.98px) {
+  .event-card-container .event-card-wrapper .event-card {
+    width: calc(50% - 10px);
+  }
+}
+@media only screen and (min-width: 992px) and (max-width: 1199.98px) {
+  .event-card-container .event-card-wrapper .event-card {
+    width: calc(33.33% - 10px);
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .event-card-container .event-card-wrapper .event-card {
+    width: calc(25% - 10px);
+  }
+}
+.event-card-container .event-card-wrapper .event-card:last-of-type {
+  margin-right: 0;
+}
+
+.jumbotron {
+  overflow: hidden;
+  position: relative;
+}
+.jumbotron img {
+  position: absolute;
+  min-width: 100%;
+  min-height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.jumbotron .jumbotron__overlay {
+  background: rgba(25, 2, 29, 0.8);
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+@media only screen and (min-width: 992px) {
+  .navbar {
+    min-height: 70px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+  }
+}
+.navbar .navbar-brand {
+  width: 100%;
+}
+@media only screen and (max-width: 991.98px) {
+  .navbar .navbar-brand {
+    text-align: center;
+  }
+}
+.navbar .navbar-brand img {
+  width: 160px;
 }
 
 body {
