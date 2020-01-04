@@ -365,7 +365,7 @@ p.small {
   transform: translate(-50%, -50%);
 }
 .jumbotron .jumbotron__overlay {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(37, 11, 41, 0.8);
   bottom: 0;
   left: 0;
   position: absolute;
@@ -376,6 +376,9 @@ p.small {
 @media only screen and (min-width: 992px) {
   .navbar {
     min-height: 70px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
   }
 }
 .navbar .navbar-brand {
