@@ -40,6 +40,7 @@
 
   .event-card-wrapper {
     @include breakpoint(false, $break-md--min) {
+      //TODO: make JS solution for the min-width being calculated by amount of events in 'card-wrapper'.
       min-width: 2500px;
       -webkit-backface-visibility: hidden;
     }
