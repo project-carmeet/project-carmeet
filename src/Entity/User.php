@@ -191,7 +191,7 @@ class User implements UserInterface, ResetPasswordTokenAware
      */
     public function getResetPasswordTimestamp(): DateTimeInterface
     {
-        if (null === $this->resetPasswordToken) {
+        if (null === $this->resetPasswordTimestamp) {
             throw new LogicException('No timestamp set, use hasForgotPasswordToken to check if a valid token is present.');
         }
 

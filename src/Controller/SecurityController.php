@@ -76,8 +76,14 @@ final class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var ForgotPasswordModel $data */
             $data = $form->getData();
+            if (!$data instanceof ForgotPasswordModel) {
+                throw new UnexpectedValueException('Invalid object received as form data.');
+            }
+
+            if (null === $data->getEmail()) {
+                throw new UnexpectedValueException('Expected email to be set.');
+            }
 
             $user = $userRepository->findOneOrNullByEmail($data->getEmail());
             if (null !== $user) {

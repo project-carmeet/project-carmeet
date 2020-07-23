@@ -7,7 +7,6 @@ namespace App\Subscriber\User;
 use App\Event\User\ForgotPasswordEvent;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use LogicException;
 use Ramsey\Uuid\Uuid;
 use Swift_Mailer;
 use Swift_Message;
@@ -64,16 +63,10 @@ final class ForgotPasswordSubscriber implements EventSubscriberInterface
 
     public function emailLinkToUser(ForgotPasswordEvent $forgotPasswordEvent): void
     {
-        $token = $forgotPasswordEvent->getUser()->getResetPasswordToken();
-
-        if (null === $token) {
-            throw new LogicException('No forget token set, please make sure the events are configured correctly.');
-        }
-
         $messsage = new Swift_Message('Forgot password', sprintf(
             'You dumb human, click here: <a href="%s">I forgot it, I\'am sorry mr. computer, it will never happen again.</a>',
             $this->urlGenerator->generate('app_security_change_password', [
-                'token' => $token,
+                'token' => $forgotPasswordEvent->getUser()->getResetPasswordToken(),
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ));
 
