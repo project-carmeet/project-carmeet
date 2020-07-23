@@ -32,7 +32,7 @@ final class UserRepository extends ServiceEntityRepository
     public function findOneOrNullByForgotPasswordToken(string $token): ?User
     {
         return $this->findOneBy([
-            'forgotPasswordToken' => $token,
+            'resetPasswordToken' => $token,
         ]);
     }
 }

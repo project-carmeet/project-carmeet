@@ -55,8 +55,8 @@ final class ForgotPasswordSubscriber implements EventSubscriberInterface
     {
         $token = Uuid::uuid4();
         $user = $forgotPasswordEvent->getUser();
-        $user->setForgotPasswordToken($token->toString());
-        $user->setForgotPasswordTimestamp(new DateTimeImmutable());
+        $user->setResetPasswordToken($token->toString());
+        $user->setResetPasswordTimestamp(new DateTimeImmutable());
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -64,7 +64,7 @@ final class ForgotPasswordSubscriber implements EventSubscriberInterface
 
     public function emailLinkToUser(ForgotPasswordEvent $forgotPasswordEvent): void
     {
-        $token = $forgotPasswordEvent->getUser()->getForgotPasswordToken();
+        $token = $forgotPasswordEvent->getUser()->getResetPasswordToken();
 
         if (null === $token) {
             throw new LogicException('No forget token set, please make sure the events are configured correctly.');
@@ -76,6 +76,8 @@ final class ForgotPasswordSubscriber implements EventSubscriberInterface
                 'token' => $token,
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ));
+
+        $messsage->setContentType('text/html');
 
         $messsage->setFrom('dumb_human_notifier@carmeet.internal');
         $messsage->setTo($forgotPasswordEvent->getUser()->getEmail());

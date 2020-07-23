@@ -5,19 +5,24 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Event\User\ForgotPasswordEvent;
+use App\Event\User\ResetPasswordEvent;
 use App\Factory\UserFactory;
 use App\Form\Type\User\ForgotPasswordType;
 use App\Form\Type\User\RegistrationType;
+use App\Form\Type\User\RepeatedPasswordType;
 use App\Model\Form\ForgotPasswordModel;
 use App\Repository\UserRepository;
+use App\Service\Authentication\ResetTokenValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use UnexpectedValueException;
 
 final class SecurityController extends AbstractController
 {
@@ -91,13 +96,44 @@ final class SecurityController extends AbstractController
     /**
      * @Route("/change-password/{token}", name="app_security_change_password")
      */
-    public function changePassword(string $token, UserRepository $userRepository): Response
-    {
-        dd($token, $userRepository->findOneOrNullByForgotPasswordToken($token));
+    public function changePassword(
+        string $token,
+        Request $request,
+        EventDispatcherInterface $eventDispatcher,
+        UserRepository $userRepository,
+        ResetTokenValidator $resetTokenValidator
+    ): Response {
+        $user = $userRepository->findOneOrNullByForgotPasswordToken($token);
+        if (null === $user) {
+            throw $this->createNotFoundException(sprintf('No reset user found by token "%s".', $token));
+        }
 
-        // TODO: implement this method to acctually show the form and handle the change
+        if (!$user->hasResetPasswordToken()) {
+            throw new BadRequestHttpException('No valid token present on the user.');
+        }
 
-        return new Response('TODO');
+        if ($resetTokenValidator->isExpired($user)) {
+            return $this->render('security/expired_reset_token.html.twig');
+        }
+
+        $form = $this->createForm(RepeatedPasswordType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $form->getData();
+            if (!is_string($password)) {
+                throw new UnexpectedValueException('Expected password to be a string.');
+            }
+
+            $eventDispatcher->dispatch(new ResetPasswordEvent($user, $password));
+
+            $this->addFlash('success', 'Updated password.');
+
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('security/reset_password.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
