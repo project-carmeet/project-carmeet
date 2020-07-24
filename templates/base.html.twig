@@ -1,49 +1,49 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
-    <meta http-equiv="content-language" content="nl">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta http-equiv="content-language" content="nl">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-capable" content="yes">
 
-    {% block seo_robots %}
-        <meta name="robots" content="index, follow"/>
-    {% endblock %}
-    {% block stylesheets %}
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
-              integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
-              crossorigin="anonymous">
-        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/common.css') }}">
-    {% endblock %}
-</head>
-<body>
+        {% block seo_robots %}
+            <meta name="robots" content="index, follow"/>
+        {% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+                  integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+                  crossorigin="anonymous">
+            <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/common.css') }}">
+        {% endblock %}
+    </head>
+    <body>
 
-{% block header %}
-    <nav class="navbar">
-        <a class="navbar-brand" href="#">
-            <img src="{{ asset('images/logo.png') }}" alt="Project Carmeet">
-        </a>
-    </nav>
-{% endblock %}
+        {% block header %}
+            <nav class="navbar">
+                <a class="navbar-brand" href="{{ path('app_homepage') }}">
+                    <img src="{{ asset('images/logo.png') }}" alt="Project Carmeet">
+                </a>
+            </nav>
+        {% endblock %}
 
-{#TODO: move flashbag_messages to proper position / template #}
-{% block flashbag_messages %}
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <h5>{{ label }}: {{ message }}</h5>
-        {% endfor %}
-    {% endfor %}
-{% endblock %}
+        {#TODO: move flashbag_messages to proper position / template #}
+        {% block flashbag_messages %}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <h5>{{ label }}: {{ message }}</h5>
+                {% endfor %}
+            {% endfor %}
+        {% endblock %}
 
-{% block body %}{% endblock %}
+        {% block body %}{% endblock %}
 
-{% block javascripts %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    {#            <script src="{{ asset('js/common.js') }}"></script>#}
-{% endblock %}
-</body>
+        {% block javascripts %}
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+            <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+            {#            <script src="{{ asset('js/common.js') }}"></script>#}
+        {% endblock %}
+    </body>
 </html>

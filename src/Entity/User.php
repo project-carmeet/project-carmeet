@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Model\ResetPasswordTokenAware;
 use BadMethodCallException;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use LogicException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(indexes={@ORM\Index(columns={"username"}), @ORM\Index(columns={"email"})})
  */
-class User implements UserInterface
+class User implements UserInterface, ResetPasswordTokenAware
 {
     /**
      * @ORM\Id()
@@ -57,6 +60,20 @@ class User implements UserInterface
      * @var array<int, string>
      */
     protected $roles;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string|null
+     */
+    protected $resetPasswordToken;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     *
+     * @var DateTimeInterface|null
+     */
+    protected $resetPasswordTimestamp;
 
     /**
      * @param array<int, string> $roles
@@ -142,6 +159,57 @@ class User implements UserInterface
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
+    }
+
+    public function hasResetPasswordToken(): bool
+    {
+        return null !== $this->resetPasswordToken && null !== $this->resetPasswordTimestamp;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getResetPasswordToken(): string
+    {
+        if (null === $this->resetPasswordToken) {
+            throw new LogicException('No token set, use hasForgotPasswordToken to check if a valid token is present.');
+        }
+
+        return $this->resetPasswordToken;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setResetPasswordToken(string $forgotPasswordToken): void
+    {
+        $this->resetPasswordToken = $forgotPasswordToken;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getResetPasswordTimestamp(): DateTimeInterface
+    {
+        if (null === $this->resetPasswordTimestamp) {
+            throw new LogicException('No timestamp set, use hasForgotPasswordToken to check if a valid token is present.');
+        }
+
+        return $this->resetPasswordTimestamp;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setResetPasswordTimestamp(DateTimeInterface $forgotPasswordTimestamp): void
+    {
+        $this->resetPasswordTimestamp = $forgotPasswordTimestamp;
+    }
+
+    public function clearResetPasswordToken(): void
+    {
+        $this->resetPasswordToken = null;
+        $this->resetPasswordTimestamp = null;
     }
 
     /**

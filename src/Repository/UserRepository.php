@@ -8,6 +8,9 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @phpstan-extends ServiceEntityRepository<User>
+ */
 final class UserRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -26,6 +29,13 @@ final class UserRepository extends ServiceEntityRepository
     {
         return $this->findOneBy([
             'email' => $email,
+        ]);
+    }
+
+    public function findOneOrNullByForgotPasswordToken(string $token): ?User
+    {
+        return $this->findOneBy([
+            'resetPasswordToken' => $token,
         ]);
     }
 }
