@@ -6,12 +6,11 @@ namespace App\Model\Form;
 
 use App\Entity\User;
 use DateTimeInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 final class EventModel
 {
     /**
-     * @var UserInterface
+     * @var User
      */
     protected $user;
 

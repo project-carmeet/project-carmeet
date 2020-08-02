@@ -43,11 +43,6 @@
             "App\\": "src/"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "App\\Tests\\": "tests/"
-        }
-    },
     "replace": {
         "paragonie/random_compat": "2.*",
         "symfony/polyfill-ctype": "*",
@@ -69,7 +64,7 @@
             "@auto-scripts"
         ],
         "phpstan": [
-            "vendor/bin/phpstan analyze ./src --level max"
+            "vendor/bin/phpstan analyze"
         ]
     },
     "conflict": {
