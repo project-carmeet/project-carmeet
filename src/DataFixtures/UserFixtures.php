@@ -21,6 +21,11 @@ final class UserFixtures extends Fixture
         $this->encoder = $encoder;
     }
 
+    public static function createReferenceKey(string $username): string
+    {
+        return sprintf('user_%s', $username);
+    }
+
     /**
      * @inheritDoc
      */
@@ -44,6 +49,8 @@ final class UserFixtures extends Fixture
 
         $password = $this->encoder->encodePassword($user, $username);
         $user->setPassword($password);
+
+        $this->setReference(static::createReferenceKey($username), $user);
 
         return $user;
     }

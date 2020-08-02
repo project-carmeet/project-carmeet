@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% import 'macro/_event.html.twig' as event %}
+
 {% block title %}Home{% endblock %}
 
 {% block body %}
@@ -16,38 +18,9 @@
     <div class="container">
         <div class="event-card-container mb-30">
             <div class="event-card-wrapper">
-                {#TODO: replace test events with real data#}
-                {% include 'shared/cards/_event_card.html.twig' with {
-                    title: 'Test event',
-                    description: '20:00 / 23:00 uur - Rotterdam',
-                    image: 'images/hero/hero_xs.jpg',
-                    image_alt: 'test event',
-                    route: path('app_homepage'),
-                } %}
-
-                {% include 'shared/cards/_event_card.html.twig' with {
-                    title: 'Test event',
-                    description: '20:00 / 23:00 uur - Rotterdam',
-                    image: 'images/hero/hero_xs.jpg',
-                    image_alt: 'test event',
-                    route: path('app_homepage'),
-                } %}
-
-                {% include 'shared/cards/_event_card.html.twig' with {
-                    title: 'Test event',
-                    description: '20:00 / 23:00 uur - Rotterdam',
-                    image: 'images/hero/hero_xs.jpg',
-                    image_alt: 'test event',
-                    route: path('app_homepage'),
-                } %}
-
-                {% include 'shared/cards/_event_card.html.twig' with {
-                    title: 'Test event',
-                    description: '20:00 / 23:00 uur - Rotterdam',
-                    image: 'images/hero/hero_xs.jpg',
-                    image_alt: 'test event',
-                    route: path('app_homepage'),
-                } %}
+                {% for event in events %}
+                    {{ event.card(event) }}
+                {% endfor %}
 
                 {% include 'shared/cards/_event_action_card.html.twig' with {
                     title: 'Bekijk alle events',
@@ -68,38 +41,9 @@
     <div class="container">
         <div class="event-card-container mb-30">
             <div class="event-card-wrapper">
-                {#TODO: replace test events with real data#}
-                {% include 'shared/cards/_event_card.html.twig' with {
-                    title: 'Test event',
-                    description: '20:00 / 23:00 uur - Rotterdam',
-                    image: 'images/hero/hero_xs.jpg',
-                    image_alt: 'test event',
-                    route: path('app_homepage'),
-                } %}
-
-                {% include 'shared/cards/_event_card.html.twig' with {
-                    title: 'Test event',
-                    description: '20:00 / 23:00 uur - Rotterdam',
-                    image: 'images/hero/hero_xs.jpg',
-                    image_alt: 'test event',
-                    route: path('app_homepage'),
-                } %}
-
-                {% include 'shared/cards/_event_card.html.twig' with {
-                    title: 'Test event',
-                    description: '20:00 / 23:00 uur - Rotterdam',
-                    image: 'images/hero/hero_xs.jpg',
-                    image_alt: 'test event',
-                    route: path('app_homepage'),
-                } %}
-
-                {% include 'shared/cards/_event_card.html.twig' with {
-                    title: 'Test event',
-                    description: '20:00 / 23:00 uur - Rotterdam',
-                    image: 'images/hero/hero_xs.jpg',
-                    image_alt: 'test event',
-                    route: path('app_homepage'),
-                } %}
+                {% for event in events %}
+                    {{ event.card(event) }}
+                {% endfor %}
 
                 {% include 'shared/cards/_event_action_card.html.twig' with {
                     title: 'Bekijk alle events',
@@ -113,8 +57,14 @@
 
     {# OLD DEMO STUFF BELOW #}
     {% if app.user %}
-        <h3>You are logged in as {{ app.user.username }}, if you do not like this click <a
-                    href="{{ path('app_logout') }}">here</a>.</h3>
+        <h3>
+            You are logged in as {{ app.user.username }}, if you do not like this click
+            <a href="{{ path('app_logout') }}">here</a>.
+        </h3>
+        <h3>
+            Create event by clicking
+            <a href="{{ path('app_event_create') }}">here</a>.
+        </h3>
     {% else %}
         <h3>To login click <a href="{{ path('app_login') }}">here</a>.</h3>
         <h3>To register click <a href="{{ path('app_register') }}">here</a>.</h3>
