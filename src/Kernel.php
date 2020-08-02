@@ -18,7 +18,7 @@ class Kernel extends BaseKernel
     public function registerBundles(): iterable
     {
         /** @var array<class-string, array<string, bool|null>> $contents */
-        $contents = require '../config/bundles.php';
+        $contents = require __DIR__ . '/../config/bundles.php';
         foreach ($contents as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
                 /** @psalm-suppress MixedMethodCall */
