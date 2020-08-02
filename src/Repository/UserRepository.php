@@ -9,10 +9,15 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @psalm-suppress  PropertyNotSetInConstructor
+ *
  * @phpstan-extends ServiceEntityRepository<User>
  */
 final class UserRepository extends ServiceEntityRepository
 {
+    /**
+     * @psalm-suppress  ArgumentTypeCoercion
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);

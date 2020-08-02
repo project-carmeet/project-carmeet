@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use LogicException;
 
 /**
  * @ORM\Entity()
@@ -17,7 +18,7 @@ class Event
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="string", nullable=false)
      *
-     * @var string $id
+     * @var string|null $id
      */
     protected $id;
 
@@ -67,6 +68,10 @@ class Event
 
     public function getId(): string
     {
+        if (null === $this->id) {
+            throw new LogicException('Entity has not been persisted yet, no id is present.');
+        }
+
         return $this->id;
     }
 

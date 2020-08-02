@@ -21,6 +21,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use UnexpectedValueException;
 
 final class DefaultAuthenticator extends AbstractFormLoginAuthenticator
 {
@@ -79,18 +80,25 @@ final class DefaultAuthenticator extends AbstractFormLoginAuthenticator
         return $credentials;
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function getUser($credentials, UserProviderInterface $userProvider): UserInterface
     {
-        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
+        if (!is_array($credentials)) {
+            throw new UnexpectedValueException('Expected credentials to be an array.');
+        }
+
+        /** @var string $csrfToken */
+        $csrfToken = $credentials['csrf_token'];
+
+        $token = new CsrfToken('authenticate', $csrfToken);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException();
+            throw new InvalidCsrfTokenException('Csrf token is invalid.');
         }
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy([
-            'email' => $credentials['email']
+            'email' => $credentials['email'],
         ]);
 
-        if (!$user) {
+        if (!$user instanceof UserInterface) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('No user found.');
         }
@@ -100,7 +108,14 @@ final class DefaultAuthenticator extends AbstractFormLoginAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user): bool
     {
-        return $this->encoder->isPasswordValid($user, $credentials['password']);
+        if (!is_array($credentials)) {
+            throw new UnexpectedValueException('Expected credentials to be an array.');
+        }
+
+        /** @var string $password */
+        $password = $credentials['password'];
+
+        return $this->encoder->isPasswordValid($user, $password);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): Response
