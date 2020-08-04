@@ -1,4 +1,7 @@
 {
+    "composer/package-versions-deprecated": {
+        "version": "1.10.99"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -98,6 +101,9 @@
     },
     "nikic/php-parser": {
         "version": "v4.3.0"
+    },
+    "nusje2000/process-runner": {
+        "version": "v0.1.2"
     },
     "ocramius/package-versions": {
         "version": "1.4.2"
@@ -267,6 +273,9 @@
     "symfony/polyfill-php80": {
         "version": "v1.18.0"
     },
+    "symfony/process": {
+        "version": "v5.0.11"
+    },
     "symfony/profiler-pack": {
         "version": "v1.0.4"
     },
@@ -329,6 +338,19 @@
             "./config/packages/dev/swiftmailer.yaml",
             "./config/packages/swiftmailer.yaml",
             "./config/packages/test/swiftmailer.yaml"
+        ]
+    },
+    "symfony/translation": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "2ad9d2545bce8ca1a863e50e92141f0b9d87ffcd"
+        },
+        "files": [
+            "./config/packages/translation.yaml",
+            "./translations/.gitignore"
         ]
     },
     "symfony/translation-contracts": {
