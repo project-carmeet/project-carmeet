@@ -19,12 +19,11 @@ class Kernel extends BaseKernel
 
     /**
      * @psalm-suppress MixedMethodCall
-     * @psalm-suppress UnresolvableInclude
      */
     public function registerBundles(): iterable
     {
         /** @var array<class-string, array<string, bool>> $contents */
-        $contents = require $this->getProjectDir() . '/config/bundles.php';
+        $contents = require dirname(__DIR__) . '/config/bundles.php';
         foreach ($contents as $class => $envs) {
             if (($envs[$this->environment] ?? $envs['all'] ?? false) && class_exists($class)) {
                 yield new $class();
