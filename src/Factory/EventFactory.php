@@ -12,7 +12,7 @@ use UnexpectedValueException;
 
 final class EventFactory
 {
-    public function createFromEventModel(EventModel $eventModel): Event
+    public function createEntityFromEventModel(EventModel $eventModel): Event
     {
         $name = $eventModel->getName();
         if (null === $name) {
@@ -44,5 +44,16 @@ final class EventFactory
             $dateUntil,
             $eventModel->getUser()
         );
+    }
+
+    public function createEventModelFromEntity(Event $event): EventModel
+    {
+        $model = new EventModel($event->getUser());
+        $model->setName($event->getName());
+        $model->setDescription($event->getDescription());
+        $model->setDateFrom($event->getDateFrom());
+        $model->setDateUntil($event->getDateUntil());
+
+        return $model;
     }
 }
