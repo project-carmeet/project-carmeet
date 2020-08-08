@@ -7,6 +7,7 @@ namespace App\Security\Voter;
 use App\Entity\Event;
 use App\Entity\User;
 use App\Security\EventAction;
+use App\Security\Role;
 use LogicException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -33,6 +34,10 @@ final class EventVoter extends Voter
         $user = $token->getUser();
         if (!$user instanceof User) {
             return false;
+        }
+
+        if ($user->hasRole(Role::ADMIN)) {
+            return true;
         }
 
         if (null === $subject && $attribute === EventAction::CREATE) {

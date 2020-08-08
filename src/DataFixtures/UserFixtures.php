@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use App\Security\Role;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -31,7 +32,7 @@ final class UserFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
-        $admin = $this->createUser('admin');
+        $admin = $this->createUser('admin', [Role::USER, Role::ADMIN]);
         $manager->persist($admin);
 
         $newUser = $this->createUser('new_user');
@@ -43,12 +44,16 @@ final class UserFixtures extends Fixture
         $manager->flush();
     }
 
-    private function createUser(string $username): User
+    /**
+     * @param array<string>|null $roles
+     */
+    private function createUser(string $username, ?array $roles = null): User
     {
         $user = new User($username, sprintf('%s@carmeet.internal', $username));
 
         $password = $this->encoder->encodePassword($user, $username);
         $user->setPassword($password);
+        $user->setRoles($roles ?? [Role::USER]);
 
         $this->setReference(static::createReferenceKey($username), $user);
 

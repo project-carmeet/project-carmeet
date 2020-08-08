@@ -11,6 +11,7 @@ use App\Form\Type\Event\EventType;
 use App\Mapper\EventMapper;
 use App\Model\Form\EventModel;
 use App\Repository\EventRepository;
+use App\Security\EventAction;
 use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -70,6 +71,8 @@ final class EventController extends AbstractController
             throw $this->createNotFoundException(sprintf('Could not find event by id "%s".', $id));
         }
 
+        $this->denyAccessUnlessGranted(EventAction::VIEW, $event);
+
         return $this->render('event/view.html.twig', [
             'event' => $event,
         ]);
@@ -80,8 +83,9 @@ final class EventController extends AbstractController
      */
     public function create(): Response
     {
-        $form = $this->createForm(EventType::class, new EventModel($this->getUserEntity()));
+        $this->denyAccessUnlessGranted(EventAction::CREATE);
 
+        $form = $this->createForm(EventType::class, new EventModel($this->getUserEntity()));
         $form->handleRequest($this->requestStack->getCurrentRequest());
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
@@ -112,6 +116,8 @@ final class EventController extends AbstractController
         if (!$event instanceof Event) {
             throw $this->createNotFoundException(sprintf('Could not find event by id "%s".', $id));
         }
+
+        $this->denyAccessUnlessGranted(EventAction::EDIT, $event);
 
         $form = $this->createForm(EventType::class, $this->eventFactory->createEventModelFromEntity($event));
         $form->handleRequest($this->requestStack->getCurrentRequest());

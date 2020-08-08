@@ -41,7 +41,6 @@ final class EventType extends AbstractType
             'date_format' => 'yMd',
             'html5' => false,
             'required' => false,
-            'data' => new DateTimeImmutable(),
             'years' => range((int)date('Y'), (int)date('Y') + 2),
             'constraints' => [
                 new GreaterThan([
@@ -57,7 +56,6 @@ final class EventType extends AbstractType
             'date_format' => 'yMd',
             'html5' => false,
             'required' => false,
-            'data' => new DateTimeImmutable(),
             'years' => range((int)date('Y'), (int)date('Y') + 2),
             'constraints' => [
                 new GreaterThan([

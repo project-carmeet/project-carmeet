@@ -15,7 +15,7 @@
 
 {% macro expanded_card(event) %}
     <article class="event-card mb-20">
-        <a href="{{ path('app_event_view', {id: event.id}) }}" class="card">
+        <div class="card">
             <img src="{{ asset('images/hero/hero_xs.jpg') }}" class="card-img-top" alt="{{ event.name }}">
             <div class="card-body">
                 <h5 class="card-title">{{ event.name }}</h5>
@@ -25,7 +25,12 @@
                 </p>
                 <p class="card-text">By {{ event.user.username }}</p>
                 <p class="card-text">{{ event.description }}</p>
+                {% if is_granted(constant('App\\Security\\EventAction::EDIT'), event) %}
+                    <p class="card-text">
+                        <a href="{{ path('app_event_edit', {'id': event.id}) }}">Edit</a>
+                    </p>
+                {% endif %}
             </div>
-        </a>
+        </div>
     </article>
 {% endmacro %}

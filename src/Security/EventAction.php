@@ -16,6 +16,9 @@ final class EventAction
         return in_array($action, self::getActions(), true);
     }
 
+    /**
+     * @return array<string>
+     */
     public static function getActions(): array
     {
         return [
