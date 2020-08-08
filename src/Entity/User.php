@@ -22,7 +22,7 @@ class User implements UserInterface, ResetPasswordTokenAware
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="string", nullable=false)
      *
-     * @var string $id
+     * @var string|null $id
      */
     protected $id;
 
@@ -89,6 +89,10 @@ class User implements UserInterface, ResetPasswordTokenAware
 
     public function getId(): string
     {
+        if (null === $this->id) {
+            throw new LogicException('User has not been persisted yet so there is no ID available.');
+        }
+
         return $this->id;
     }
 

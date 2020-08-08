@@ -11,6 +11,7 @@ use App\Form\Type\User\ForgotPasswordType;
 use App\Form\Type\User\RegistrationType;
 use App\Form\Type\User\RepeatedPasswordType;
 use App\Model\Form\ForgotPasswordModel;
+use App\Model\Form\UserModel;
 use App\Repository\UserRepository;
 use App\Service\Authentication\ResetTokenValidator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,7 +54,13 @@ final class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $userFactory->createFromUserModel($form->getData());
+            /** @var mixed $model */
+            $model = $form->getData();
+            if (!$model instanceof UserModel) {
+                throw new UnexpectedValueException(sprintf('Expected form data to be instance of "%s".', UserModel::class));
+            }
+
+            $user = $userFactory->createFromUserModel($model);
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -76,6 +83,7 @@ final class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var mixed $data */
             $data = $form->getData();
             if (!$data instanceof ForgotPasswordModel) {
                 throw new UnexpectedValueException('Invalid object received as form data.');
@@ -125,6 +133,7 @@ final class SecurityController extends AbstractController
         $form = $this->createForm(RepeatedPasswordType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var mixed $password */
             $password = $form->getData();
             if (!is_string($password)) {
                 throw new UnexpectedValueException('Expected password to be a string.');
