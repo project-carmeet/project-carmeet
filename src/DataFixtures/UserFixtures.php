@@ -9,6 +9,9 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 final class UserFixtures extends Fixture
 {
     /**

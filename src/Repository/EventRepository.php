@@ -10,9 +10,14 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @phpstan-extends ServiceEntityRepository<Event>
+ *
+ * @psalm-suppress  PropertyNotSetInConstructor
  */
 final class EventRepository extends ServiceEntityRepository
 {
+    /**
+     * @psalm-suppress ArgumentTypeCoercion
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Event::class);
