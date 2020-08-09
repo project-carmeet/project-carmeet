@@ -37,7 +37,7 @@ jobs:
                 run: |
                     php bin/console dev:load_data
                 env:
-                    DATABASE_URL: mysql://root:root@127.0.0.1:3306/symfony
+                    DATABASE_URL: mysql://root:root@mysql:3306/symfony
 
             -   name: PHP Stan
                 run: |
@@ -51,4 +51,4 @@ jobs:
                 run: |
                     composer run phpunit
                 env:
-                    DATABASE_URL: mysql://root:root@127.0.0.1:3306/symfony
+                    DATABASE_URL: mysql://root:root@mysql:3306/symfony
