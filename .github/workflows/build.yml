@@ -47,3 +47,9 @@ jobs:
             -   name: Psalm
                 run: |
                     composer run psalm
+
+            -   name: PHP Unit
+                run: |
+                    composer run phpunit
+                env:
+                    DATABASE_URL: mysql://root:root@127.0.0.1:3306/symfony
