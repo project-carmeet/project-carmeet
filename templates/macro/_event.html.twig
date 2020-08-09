@@ -8,7 +8,6 @@
                     {{ event.dateFrom|date('Y-m-d') }}
                     {{ event.dateFrom|date('H:i') }} / {{ event.dateUntil|date('H:i') }}
                 </p>
-                b
                 {% if event.cancelled %}
                     <p class="card-text" style="color: red">
                         Event has been cancelled on {{ event.cancellationDate|date('Y-m-d') }}
