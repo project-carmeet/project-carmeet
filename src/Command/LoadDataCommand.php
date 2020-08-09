@@ -34,6 +34,10 @@ final class LoadDataCommand extends Command
         $executor->addListener(new ConsoleListener($output));
         $executor->execute($taskList);
 
+        if ($taskList->getFailedTasks()->count() > 0) {
+            return 1;
+        }
+
         return 0;
     }
 }
