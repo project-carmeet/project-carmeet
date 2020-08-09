@@ -12,6 +12,7 @@ use App\Mapper\EventMapper;
 use App\Model\Form\EventModel;
 use App\Repository\EventRepository;
 use App\Security\EventAction;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -66,10 +67,7 @@ final class EventController extends AbstractController
      */
     public function view(string $id): Response
     {
-        $event = $this->eventRepository->find($id);
-        if (!$event instanceof Event) {
-            throw $this->createNotFoundException(sprintf('Could not find event by id "%s".', $id));
-        }
+        $event = $this->getEvent($id);
 
         $this->denyAccessUnlessGranted(EventAction::VIEW, $event);
 
@@ -112,10 +110,7 @@ final class EventController extends AbstractController
      */
     public function edit(string $id): Response
     {
-        $event = $this->eventRepository->find($id);
-        if (!$event instanceof Event) {
-            throw $this->createNotFoundException(sprintf('Could not find event by id "%s".', $id));
-        }
+        $event = $this->getEvent($id);
 
         $this->denyAccessUnlessGranted(EventAction::EDIT, $event);
 
@@ -139,6 +134,52 @@ final class EventController extends AbstractController
         return $this->render('event/edit.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/event/cancel/{id}", name="app_event_cancel")
+     */
+    public function cancel(string $id): Response
+    {
+        $event = $this->getEvent($id);
+
+        $this->denyAccessUnlessGranted(EventAction::CANCEL, $event);
+
+        $event->setCancellationDate(new DateTimeImmutable());
+        $this->entityManager->persist($event);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('app_event_view', [
+            'id' => $event->getId(),
+        ]);
+    }
+
+    /**
+     * @Route("/event/reopen/{id}", name="app_event_reopen")
+     */
+    public function reopen(string $id): Response
+    {
+        $event = $this->getEvent($id);
+
+        $this->denyAccessUnlessGranted(EventAction::REOPEN, $event);
+
+        $event->setCancellationDate(null);
+        $this->entityManager->persist($event);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('app_event_view', [
+            'id' => $event->getId(),
+        ]);
+    }
+
+    private function getEvent(string $id): Event
+    {
+        $event = $this->eventRepository->find($id);
+        if (!$event instanceof Event) {
+            throw $this->createNotFoundException(sprintf('Could not find event by id "%s".', $id));
+        }
+
+        return $event;
     }
 
     private function getUserEntity(): User

@@ -8,6 +8,15 @@
                     {{ event.dateFrom|date('Y-m-d') }}
                     {{ event.dateFrom|date('H:i') }} / {{ event.dateUntil|date('H:i') }}
                 </p>
+                b
+                {% if event.cancelled %}
+                    <p class="card-text" style="color: red">
+                        Event has been cancelled on {{ event.cancellationDate|date('Y-m-d') }}
+                        {% if is_granted(constant('App\\Security\\EventAction::EDIT'), event) %}
+                            If this is not correct, you can contact the administrators to reopen the event.
+                        {% endif %}
+                    </p>
+                {% endif %}
             </div>
         </a>
     </article>
@@ -25,9 +34,31 @@
                 </p>
                 <p class="card-text">By {{ event.user.username }}</p>
                 <p class="card-text">{{ event.description }}</p>
+
+                {% if event.cancelled %}
+                    <p class="card-text" style="color: red">
+                        Event has been cancelled on {{ event.cancellationDate|date('Y-m-d') }}.
+                        {% if is_granted(constant('App\\Security\\EventAction::EDIT'), event) %}
+                            If this is not correct, you can contact the administrators to reopen the event.
+                        {% endif %}
+                    </p>
+                {% endif %}
+
                 {% if is_granted(constant('App\\Security\\EventAction::EDIT'), event) %}
                     <p class="card-text">
                         <a href="{{ path('app_event_edit', {'id': event.id}) }}">Edit</a>
+                    </p>
+                {% endif %}
+
+                {% if is_granted(constant('App\\Security\\EventAction::CANCEL'), event) %}
+                    <p class="card-text">
+                        <a href="{{ path('app_event_cancel', {'id': event.id}) }}">Cancel</a>
+                    </p>
+                {% endif %}
+
+                {% if is_granted(constant('App\\Security\\EventAction::REOPEN'), event) %}
+                    <p class="card-text">
+                        <a href="{{ path('app_event_reopen', {'id': event.id}) }}">Reopen</a>
                     </p>
                 {% endif %}
             </div>

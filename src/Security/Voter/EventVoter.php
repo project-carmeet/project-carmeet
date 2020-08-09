@@ -36,16 +36,24 @@ final class EventVoter extends Voter
             return false;
         }
 
-        if ($user->hasRole(Role::ADMIN)) {
-            return true;
-        }
-
         if (null === $subject && $attribute === EventAction::CREATE) {
             return true;
         }
 
-        if (null !== $subject && ($attribute === EventAction::EDIT || $attribute === EventAction::DELETE)) {
+        if (null !== $subject && $attribute === EventAction::EDIT) {
+            if ($user->hasRole(Role::ADMIN)) {
+                return true;
+            }
+
             return $subject->getUser()->getEmail() === $user->getEmail();
+        }
+
+        if (null !== $subject && $attribute === EventAction::CANCEL) {
+            return ($subject->getUser()->getEmail() === $user->getEmail() || $user->hasRole(Role::ADMIN)) && !$subject->isCancelled();
+        }
+
+        if (null !== $subject && $attribute === EventAction::REOPEN) {
+            return $user->hasRole(Role::ADMIN) && $subject->isCancelled();
         }
 
         throw new LogicException('Attribute not supported.');
