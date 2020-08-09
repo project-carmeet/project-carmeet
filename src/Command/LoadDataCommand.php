@@ -30,6 +30,12 @@ final class LoadDataCommand extends Command
             'php bin/console doctrine:fixtures:load --no-interaction',
         ]);
 
+        foreach ($taskList->getIterator() as $task) {
+            $task->getProcess()->setEnv([
+                'DATABASE_URL' => $_SERVER['DATABASE_URL'],
+            ]);
+        }
+
         $executor = new SequentialExecutor(1);
         $executor->addListener(new ConsoleListener($output));
         $executor->execute($taskList);
