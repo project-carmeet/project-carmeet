@@ -12,7 +12,7 @@ use UnexpectedValueException;
 
 final class EventFactory
 {
-    public function createFromEventModel(EventModel $eventModel): Event
+    public function createEntityFromEventModel(EventModel $eventModel): Event
     {
         $name = $eventModel->getName();
         if (null === $name) {
@@ -29,20 +29,23 @@ final class EventFactory
             throw new UnexpectedValueException('Expected date until to be set.');
         }
 
-        if ($dateFrom instanceof DateTime) {
-            $dateFrom = DateTimeImmutable::createFromMutable($dateFrom);
-        }
-
-        if ($dateUntil instanceof DateTime) {
-            $dateUntil = DateTimeImmutable::createFromMutable($dateUntil);
-        }
-
         return new Event(
             $name,
             $eventModel->getDescription(),
-            $dateFrom,
-            $dateUntil,
+            new DateTimeImmutable('@' . $dateFrom->getTimestamp()),
+            new DateTimeImmutable('@' . $dateUntil->getTimestamp()),
             $eventModel->getUser()
         );
+    }
+
+    public function createEventModelFromEntity(Event $event): EventModel
+    {
+        $model = new EventModel($event->getUser());
+        $model->setName($event->getName());
+        $model->setDescription($event->getDescription());
+        $model->setDateFrom(new DateTime('@' . $event->getDateFrom()->getTimestamp()));
+        $model->setDateUntil(new DateTime('@' . $event->getDateUntil()->getTimestamp()));
+
+        return $model;
     }
 }
