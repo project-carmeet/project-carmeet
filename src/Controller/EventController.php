@@ -43,6 +43,7 @@ final class EventController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var mixed $data */
             $data = $form->getData();
             if (!$data instanceof EventModel) {
                 throw new UnexpectedValueException(sprintf('Expected form data to be instance of "%s".', EventModel::class));
