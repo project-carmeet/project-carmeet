@@ -157,6 +157,11 @@ class User implements UserInterface, ResetPasswordTokenAware
         return $this->roles;
     }
 
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->roles, true);
+    }
+
     /**
      * @param array<int, string> $roles
      */
