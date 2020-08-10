@@ -16,13 +16,30 @@ final class EventTest extends WebTestCase
         Authenticator::user($client);
 
         $crawler = $client->request(Request::METHOD_GET, '/event/create');
+
+        $startDate = [
+            'date' => [
+                'year' => date('Y'),
+                'month' => date('n'),
+                'day' => date('j'),
+            ],
+            'time' => [
+                'hour' => '13',
+                'minute' => '0',
+            ],
+        ];
+
+        $endDate = $startDate;
+        $endDate['time'] = [
+            'hour' => '14',
+            'minute' => '0',
+        ];
+
         $form = $crawler->selectButton('Create')->form([
             'event[name]' => 'Test event',
             'event[description]' => 'Some test event',
-            'event[date_from][time][hour]' => '13',
-            'event[date_from][time][minute]' => '0',
-            'event[date_until][time][hour]' => '14',
-            'event[date_until][time][minute]' => '0',
+            'event[date_from]' => $startDate,
+            'event[date_until]' => $endDate,
         ]);
 
         $client->followRedirects();
