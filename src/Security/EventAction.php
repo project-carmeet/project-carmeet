@@ -9,7 +9,8 @@ final class EventAction
     public const VIEW = 'view_event_action';
     public const CREATE = 'create_event_action';
     public const EDIT = 'edit_event_action';
-    public const DELETE = 'delete_event_action';
+    public const CANCEL = 'cancel_event_action';
+    public const REOPEN = 'reopen_event_action';
 
     public static function isAction(string $action): bool
     {
@@ -25,7 +26,8 @@ final class EventAction
             self::VIEW,
             self::CREATE,
             self::EDIT,
-            self::DELETE,
+            self::CANCEL,
+            self::REOPEN,
         ];
     }
 }
