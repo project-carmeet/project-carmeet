@@ -4,16 +4,13 @@ on: [pull_request]
 
 jobs:
     code_analysis:
-        name: 'Code analysis (PHP: ${{ matrix.php }})'
-        strategy:
-            matrix:
-                php: ['7.2', '7.4']
+        name: 'Code analysis (PHP: 7.4)'
         runs-on: ubuntu-latest
         steps:
             -   name: Setup PHP, with composer and extensions
                 uses: shivammathur/setup-php@v1
                 with:
-                    php-version: ${{ matrix.php }}
+                    php-version: 7.4
                     extension-csv: mbstring, xml, ctype, iconv, mysql, curl, intl
                     coverage: pcov
 
@@ -34,15 +31,11 @@ jobs:
                     composer run psalm
 
     tests:
-        name: 'Tests (PHP: ${{ matrix.php }}, MySQL: ${{ matrix.mysql }})'
-        strategy:
-            matrix:
-                php: ['7.2', '7.4']
-                mysql: ['5.6', '5.7']
+        name: 'Tests (PHP: 7.4, MySQL: 5.7)'
         runs-on: ubuntu-latest
         services:
             mysql:
-                image: mysql:${{ matrix.mysql }}
+                image: mysql:5.7
                 env:
                     MYSQL_ALLOW_EMPTY_PASSWORD: false
                     MYSQL_ROOT_PASSWORD: root
@@ -53,7 +46,7 @@ jobs:
             -   name: Setup PHP, with composer and extensions
                 uses: shivammathur/setup-php@v1
                 with:
-                    php-version: ${{ matrix.php }}
+                    php-version: 7.4
                     extension-csv: mbstring, xml, ctype, iconv, mysql, curl, intl
                     coverage: pcov
 
