@@ -6,7 +6,7 @@ namespace App\Command;
 
 use Nusje2000\ProcessRunner\Executor\SequentialExecutor;
 use Nusje2000\ProcessRunner\Factory\TaskListFactory;
-use Nusje2000\ProcessRunner\Listener\ConsoleListener;
+use Nusje2000\ProcessRunner\Listener\StaticConsoleListener;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -36,8 +36,8 @@ final class LoadDataCommand extends Command
             ]);
         }
 
-        $executor = new SequentialExecutor(1);
-        $executor->addListener(new ConsoleListener($output));
+        $executor = new SequentialExecutor(5);
+        $executor->addListener(new StaticConsoleListener($output));
         $executor->execute($taskList);
 
         if ($taskList->getFailedTasks()->count() > 0) {
