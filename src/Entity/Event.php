@@ -6,7 +6,7 @@ namespace App\Entity;
 
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use UnexpectedValueException;
+use LogicException;
 
 /**
  * @ORM\Entity()
@@ -18,7 +18,7 @@ class Event
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="string", nullable=false)
      *
-     * @var string $id
+     * @var string|null $id
      */
     protected $id;
 
@@ -75,6 +75,10 @@ class Event
 
     public function getId(): string
     {
+        if (null === $this->id) {
+            throw new LogicException('Event has not been persisted yet so there is no ID available.');
+        }
+
         return $this->id;
     }
 
@@ -126,7 +130,7 @@ class Event
     public function getCancellationDate(): ?DateTimeInterface
     {
         if (null === $this->cancellationDate) {
-            throw new UnexpectedValueException('Cancellation date not found. Use isCancelled() to check if the event is cancelled.');
+            throw new LogicException('Cancellation date not found. Use isCancelled() to check if the event is cancelled.');
         }
 
         return $this->cancellationDate;
