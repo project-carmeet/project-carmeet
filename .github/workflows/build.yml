@@ -42,7 +42,7 @@ jobs:
         runs-on: ubuntu-latest
         services:
             mysql:
-                image: mysql:${{ matrix.mysql }
+                image: mysql:${{ matrix.mysql }}
                 env:
                     MYSQL_ALLOW_EMPTY_PASSWORD: false
                     MYSQL_ROOT_PASSWORD: root
