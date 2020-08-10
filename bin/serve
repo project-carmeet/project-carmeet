@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Nusje2000\ProcessRunner\Executor\ParallelExecutor;
+use Nusje2000\ProcessRunner\Listener\ConsoleListener;
+use Nusje2000\ProcessRunner\Task;
+use Nusje2000\ProcessRunner\TaskList;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Process\Process;
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+$loadData = Process::fromShellCommandline('php bin/console dev:load_data');
+$serve = Process::fromShellCommandline('symfony serve -d');
+
+$taskList = new TaskList([new Task('Prepare database', $loadData), new Task('Webserver', $serve)]);
+
+$executor = new ParallelExecutor();
+$executor->addListener(new ConsoleListener(new ConsoleOutput()));
+$executor->execute($taskList);
+
+echo $serve->getOutput();
