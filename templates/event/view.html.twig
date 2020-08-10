@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% import 'macro/_event.html.twig' as event %}
+{% import 'macro/_event.html.twig' as event_macro %}
 
 {% block title %}Register!{% endblock %}
 
 {% block body %}
     <div class="container">
-        {{ event.expanded_card(event) }}
+        {{ event_macro.expanded_card(event) }}
     </div>
 {% endblock %}

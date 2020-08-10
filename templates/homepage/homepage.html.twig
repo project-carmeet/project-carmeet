@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% import 'macro/_event.html.twig' as event %}
+{% import 'macro/_event.html.twig' as event_macro %}
 
 {% block title %}Home{% endblock %}
 
@@ -19,7 +19,7 @@
         <div class="event-card-container mb-30">
             <div class="event-card-wrapper">
                 {% for event in events %}
-                    {{ event.card(event) }}
+                    {{ event_macro.card(event) }}
                 {% endfor %}
 
                 {% include 'shared/cards/_event_action_card.html.twig' with {
@@ -42,7 +42,7 @@
         <div class="event-card-container mb-30">
             <div class="event-card-wrapper">
                 {% for event in events %}
-                    {{ event.card(event) }}
+                    {{ event_macro.card(event) }}
                 {% endfor %}
 
                 {% include 'shared/cards/_event_action_card.html.twig' with {

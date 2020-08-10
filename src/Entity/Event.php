@@ -51,6 +51,13 @@ class Event
     private $dateUntil;
 
     /**
+     * @var DateTimeInterface|null
+     *
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $cancellationDate;
+
+    /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
@@ -113,6 +120,25 @@ class Event
     public function setDateUntil(DateTimeInterface $dateUntil): void
     {
         $this->dateUntil = $dateUntil;
+    }
+
+    public function isCancelled(): bool
+    {
+        return null !== $this->cancellationDate;
+    }
+
+    public function getCancellationDate(): ?DateTimeInterface
+    {
+        if (null === $this->cancellationDate) {
+            throw new LogicException('Cancellation date not found. Use isCancelled() to check if the event is cancelled.');
+        }
+
+        return $this->cancellationDate;
+    }
+
+    public function setCancellationDate(?DateTimeInterface $cancellationDate): void
+    {
+        $this->cancellationDate = $cancellationDate;
     }
 
     public function getUser(): User
