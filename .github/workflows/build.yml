@@ -1,4 +1,4 @@
-name: Code analysis
+name: Build
 
 on: [pull_request]
 
