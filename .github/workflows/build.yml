@@ -41,7 +41,7 @@ jobs:
                     MYSQL_ROOT_PASSWORD: root
                     MYSQL_DATABASE: project-carmeet
                 ports:
-                    - 3306
+                    - 3306:3306
         steps:
             -   name: Setup PHP, with composer and extensions
                 uses: shivammathur/setup-php@v1
