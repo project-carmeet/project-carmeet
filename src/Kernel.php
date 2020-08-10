@@ -48,6 +48,7 @@ class Kernel extends BaseKernel
         $loader->load($confDir . '/{packages}/' . $this->environment . '/*' . self::CONFIG_EXTS, 'glob');
 
         if ('dev' === $this->environment || 'test' === $this->environment) {
+            $loader->load($confDir . '/services/dev/commands.xml');
             $loader->load($confDir . '/services/dev/fixtures.xml');
         }
 
