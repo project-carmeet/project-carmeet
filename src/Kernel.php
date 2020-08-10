@@ -17,11 +17,15 @@ class Kernel extends BaseKernel
 
     private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
+    /**
+     * @psalm-suppress MixedMethodCall
+     */
     public function registerBundles(): iterable
     {
+        /** @var array<class-string, array<string, bool>> $contents */
         $contents = require dirname(__DIR__) . '/config/bundles.php';
         foreach ($contents as $class => $envs) {
-            if ($envs[$this->environment] ?? $envs['all'] ?? false) {
+            if (($envs[$this->environment] ?? $envs['all'] ?? false) && class_exists($class)) {
                 yield new $class();
             }
         }
@@ -55,6 +59,9 @@ class Kernel extends BaseKernel
         $loader->load($confDir . '/services/security.xml');
     }
 
+    /**
+     * @psalm-suppress DeprecatedClass
+     */
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
         $confDir = $this->getProjectDir() . '/config';

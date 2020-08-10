@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Security;
 
 use App\Repository\UserRepository;
+use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -80,9 +81,19 @@ final class DefaultAuthenticator extends AbstractFormLoginAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
+        if (!is_array($credentials)) {
+            throw new InvalidArgumentException('Expected credentials to be an array.');
+        }
+
+        /** @var mixed $csrfToken */
+        $csrfToken = $credentials['csrf_token'];
+        if (!is_string($csrfToken)) {
+            throw new InvalidArgumentException('Expected password to be a string.');
+        }
+
+        $token = new CsrfToken('authenticate', $csrfToken);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException();
+            throw new InvalidCsrfTokenException('Invalid csrf token.');
         }
 
         $user = $this->userRepository->findOneOrNullByEmail($credentials['email']);
@@ -95,7 +106,17 @@ final class DefaultAuthenticator extends AbstractFormLoginAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user): bool
     {
-        return $this->encoder->isPasswordValid($user, $credentials['password']);
+        if (!is_array($credentials)) {
+            throw new InvalidArgumentException('Expected credentials to be an array.');
+        }
+
+        /** @var mixed $password */
+        $password = $credentials['password'];
+        if (!is_string($password)) {
+            throw new InvalidArgumentException('Expected password to be a string.');
+        }
+
+        return $this->encoder->isPasswordValid($user, $password);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): Response

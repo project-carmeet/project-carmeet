@@ -43,3 +43,7 @@ jobs:
             -   name: PHP Stan
                 run: |
                     composer run phpstan
+
+            -   name: Psalm
+                run: |
+                    composer run psalm
