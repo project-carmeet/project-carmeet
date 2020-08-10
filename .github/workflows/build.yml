@@ -9,11 +9,10 @@ jobs:
             mysql:
                 image: mysql:5.7
                 env:
-                    MYSQL_ALLOW_EMPTY_PASSWORD: false
                     MYSQL_ROOT_PASSWORD: root
-                    MYSQL_DATABASE: project-carmeet
                 ports:
-                    - 3306
+                    - 3306:3306
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
         steps:
             -   name: Setup PHP, with composer and extensions
                 uses: shivammathur/setup-php@v1
@@ -35,10 +34,9 @@ jobs:
 
             -   name: Run Migration
                 run: |
-                    php bin/console doctrine:schema:update --force || echo "No migrations found or schema update failed"
-                    php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
+                    php bin/console dev:load_data
                 env:
-                    DATABASE_URL: mysql://root:root@127.0.0.1:3306/symfony
+                    DATABASE_URL: mysql://root:root@127.0.0.1:3306/project-carmeet
 
             -   name: PHP Stan
                 run: |
@@ -47,3 +45,10 @@ jobs:
             -   name: Psalm
                 run: |
                     composer run psalm
+
+            -   name: PHP Unit
+                run: |
+                    composer run phpunit
+                env:
+                    SYMFONY_DEPRECATIONS_HELPER: disabled
+                    DATABASE_URL: mysql://root:root@127.0.0.1:3306/project-carmeet

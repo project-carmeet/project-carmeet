@@ -24,13 +24,16 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
-        "nikic/php-parser": "4.6.*",
         "nusje2000/process-runner": "^0.2.0",
         "phpstan/phpstan": "^0.12.3",
         "phpstan/phpstan-doctrine": "^0.12.6",
         "phpstan/phpstan-symfony": "^0.12.1",
+        "phpunit/phpunit": "9.2.*",
         "psalm/plugin-symfony": "^1.4",
+        "symfony/browser-kit": "^5.0",
+        "symfony/css-selector": "^5.0",
         "symfony/maker-bundle": "^1.14",
+        "symfony/phpunit-bridge": "^5.1",
         "symfony/profiler-pack": "^1.0",
         "vimeo/psalm": "^3.13",
         "weirdan/doctrine-psalm-plugin": "^0.11.3"
@@ -44,6 +47,11 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
         }
     },
     "replace": {
@@ -71,6 +79,9 @@
         ],
         "psalm": [
             "vendor/bin/psalm"
+        ],
+        "phpunit": [
+            "vendor/bin/phpunit"
         ]
     },
     "conflict": {
