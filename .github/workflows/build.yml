@@ -1,32 +1,63 @@
-name: Build
+name: Code analysis
 
 on: [pull_request]
 
 jobs:
-    build:
+    code_analysis:
+        name: 'Code analysis (PHP: ${{ matrix.php }})'
+        strategy:
+            matrix:
+                php: ['7.2', '7.4']
         runs-on: ubuntu-latest
-        services:
-            mysql:
-                image: mysql:5.7
-                env:
-                    MYSQL_ROOT_PASSWORD: root
-                ports:
-                    - 3306:3306
-                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
         steps:
             -   name: Setup PHP, with composer and extensions
                 uses: shivammathur/setup-php@v1
                 with:
-                    php-version: 7.4
+                    php-version: ${{ matrix.php }}
                     extension-csv: mbstring, xml, ctype, iconv, mysql, curl, intl
                     coverage: pcov
 
             -   uses: actions/checkout@v1
 
-            -   name: Validate composer.json and composer.lock
+            -   name: Install dependencies
                 run: |
                     composer clear-cache
                     composer validate
+                    composer install --prefer-dist --no-progress --no-suggest
+
+            -   name: PHP Stan
+                run: |
+                    composer run phpstan
+
+            -   name: Psalm
+                run: |
+                    composer run psalm
+
+    tests:
+        name: 'Tests (PHP: ${{ matrix.php }}, MySQL: ${{ matrix.mysql }})'
+        strategy:
+            matrix:
+                php: ['7.2', '7.4']
+                mysql: ['5.6', '5.7']
+        runs-on: ubuntu-latest
+        services:
+            mysql:
+                image: mysql:${{ matrix.mysql }
+                env:
+                    MYSQL_ALLOW_EMPTY_PASSWORD: false
+                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_DATABASE: project-carmeet
+                ports:
+                    - 3306
+        steps:
+            -   name: Setup PHP, with composer and extensions
+                uses: shivammathur/setup-php@v1
+                with:
+                    php-version: ${{ matrix.php }}
+                    extension-csv: mbstring, xml, ctype, iconv, mysql, curl, intl
+                    coverage: pcov
+
+            -   uses: actions/checkout@v1
 
             -   name: Install dependencies
                 run: |
@@ -37,14 +68,6 @@ jobs:
                     php bin/console dev:load_data
                 env:
                     DATABASE_URL: mysql://root:root@127.0.0.1:3306/project-carmeet
-
-            -   name: PHP Stan
-                run: |
-                    composer run phpstan
-
-            -   name: Psalm
-                run: |
-                    composer run psalm
 
             -   name: PHP Unit
                 run: |
