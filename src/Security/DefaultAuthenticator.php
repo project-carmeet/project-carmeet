@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Security;
 
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,9 +26,9 @@ final class DefaultAuthenticator extends AbstractFormLoginAuthenticator
     use TargetPathTrait;
 
     /**
-     * @var EntityManagerInterface
+     * @var UserRepository
      */
-    private $entityManager;
+    private $userRepository;
 
     /**
      * @var UrlGeneratorInterface
@@ -47,12 +46,12 @@ final class DefaultAuthenticator extends AbstractFormLoginAuthenticator
     private $encoder;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
+        UserRepository $userRepository,
         UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
         UserPasswordEncoderInterface $encoder
     ) {
-        $this->entityManager = $entityManager;
+        $this->userRepository = $userRepository;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->encoder = $encoder;
@@ -86,12 +85,8 @@ final class DefaultAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy([
-            'email' => $credentials['email']
-        ]);
-
-        if (!$user) {
-            // fail authentication with a custom error
+        $user = $this->userRepository->findOneOrNullByEmail($credentials['email']);
+        if (null === $user) {
             throw new CustomUserMessageAuthenticationException('No user found.');
         }
 

@@ -47,12 +47,12 @@ class Kernel extends BaseKernel
             $loader->load($confDir . '/services/dev/fixtures.xml');
         }
 
-        $loader->load($confDir . '/services/authentication.xml');
         $loader->load($confDir . '/services/controllers.xml');
         $loader->load($confDir . '/services/factories.xml');
         $loader->load($confDir . '/services/mappers.xml');
         $loader->load($confDir . '/services/form_types.xml');
         $loader->load($confDir . '/services/repositories.xml');
+        $loader->load($confDir . '/services/security.xml');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
