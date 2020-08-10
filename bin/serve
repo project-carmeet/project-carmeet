@@ -13,7 +13,7 @@ use Symfony\Component\Process\Process;
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 $loadData = Process::fromShellCommandline('php bin/console dev:load_data');
-$serve = Process::fromShellCommandline('symfony serve');
+$serve = Process::fromShellCommandline('symfony serve -d');
 
 $taskList = new TaskList([new Task('Prepare database', $loadData), new Task('Webserver', $serve)]);
 

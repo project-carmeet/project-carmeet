@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        https://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults>
+            <tag name="controller.service_arguments"/>
+        </defaults>
+
+        <service id="app.controller.event.cancel" class="App\Controller\Event\CancelController">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.repository.event"/>
+
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
+        <service id="app.controller.event.create" class="App\Controller\Event\CreateController">
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.factory.event"/>
+
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
+        <service id="app.controller.event.edit" class="App\Controller\Event\EditController">
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.factory.event"/>
+            <argument type="service" id="app.mapper.event"/>
+            <argument type="service" id="app.repository.event"/>
+
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
+        <service id="app.controller.event.reopen" class="App\Controller\Event\ReopenController">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.repository.event"/>
+
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
+        <service id="app.controller.event.view" class="App\Controller\Event\ViewController">
+            <argument type="service" id="app.repository.event"/>
+
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
+        <service id="app.controller.security.change_password" class="App\Controller\Security\ChangePasswordController">
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="app.repository.user"/>
+            <argument type="service" id="app.authentication.reset_token_validator"/>
+
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
+        <service id="app.controller.security.forgot_password" class="App\Controller\Security\ForgotPasswordController">
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="app.repository.user"/>
+            <argument type="service" id="event_dispatcher"/>
+
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
+        <service id="app.controller.security.login" class="App\Controller\Security\LoginController">
+            <argument type="service" id="security.authentication_utils"/>
+
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
+        <service id="app.controller.security.logout" class="App\Controller\Security\LogoutController">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
+        <service id="app.controller.security.register" class="App\Controller\Security\RegisterController">
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.factory.user"/>
+
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
+        <service id="app.controller.home" class="App\Controller\HomeController">
+            <argument type="service" id="app.repository.event"/>
+
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+    </services>
+</container>

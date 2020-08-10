@@ -7,17 +7,23 @@ namespace App\Controller;
 use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 final class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="app_homepage")
+     * @var EventRepository
      */
-    public function homepage(EventRepository $eventRepository): Response
+    protected $eventRepository;
+
+    public function __construct(EventRepository $eventRepository)
+    {
+        $this->eventRepository = $eventRepository;
+    }
+
+    public function __invoke(): Response
     {
         return $this->render('homepage/homepage.html.twig', [
-            'events' => $eventRepository->findAll(),
+            'events' => $this->eventRepository->findAll(),
         ]);
     }
 }

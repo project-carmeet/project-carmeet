@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -17,7 +19,7 @@ class Kernel extends BaseKernel
 
     public function registerBundles(): iterable
     {
-        $contents = require $this->getProjectDir() . '/config/bundles.php';
+        $contents = require dirname(__DIR__) . '/config/bundles.php';
         foreach ($contents as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
                 yield new $class();
@@ -27,28 +29,40 @@ class Kernel extends BaseKernel
 
     public function getProjectDir(): string
     {
-        return \dirname(__DIR__);
+        return dirname(__DIR__);
     }
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
-        $container->setParameter('container.dumper.inline_class_loader', \PHP_VERSION_ID < 70400 || $this->debug);
+        $container->setParameter('container.dumper.inline_class_loader', $this->debug);
         $container->setParameter('container.dumper.inline_factories', true);
+
         $confDir = $this->getProjectDir() . '/config';
 
         $loader->load($confDir . '/{packages}/*' . self::CONFIG_EXTS, 'glob');
         $loader->load($confDir . '/{packages}/' . $this->environment . '/*' . self::CONFIG_EXTS, 'glob');
-        $loader->load($confDir . '/{services}' . self::CONFIG_EXTS, 'glob');
-        $loader->load($confDir . '/{services}_' . $this->environment . self::CONFIG_EXTS, 'glob');
+
+        if ('dev' === $this->environment || 'test' === $this->environment) {
+            $loader->load($confDir . '/services/dev/fixtures.xml');
+        }
+
+        $loader->load($confDir . '/services/authentication.xml');
+        $loader->load($confDir . '/services/controllers.xml');
+        $loader->load($confDir . '/services/factories.xml');
+        $loader->load($confDir . '/services/mappers.xml');
+        $loader->load($confDir . '/services/form_types.xml');
+        $loader->load($confDir . '/services/repositories.xml');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
         $confDir = $this->getProjectDir() . '/config';
 
-        $routes->import($confDir . '/{routes}/' . $this->environment . '/*' . self::CONFIG_EXTS, '/', 'glob');
-        $routes->import($confDir . '/{routes}/*' . self::CONFIG_EXTS, '/', 'glob');
-        $routes->import($confDir . '/{routes}' . self::CONFIG_EXTS, '/', 'glob');
+        if ('dev' === $this->environment || 'test' === $this->environment) {
+            $routes->import($confDir . '/routes/routes_dev.xml');
+        }
+
+        $routes->import($confDir . '/routes/routes.xml');
     }
 }

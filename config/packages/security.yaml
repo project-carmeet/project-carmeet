@@ -18,7 +18,7 @@ security:
             anonymous: lazy
             guard:
                 authenticators:
-                    - App\Security\DefaultAuthenticator
+                    - app.authentication.default_authenticator
             logout:
                 path: app_logout
                 target: app_homepage
