@@ -68,6 +68,7 @@ final class ChangePasswordController extends AbstractController
         $form = $this->createForm(RepeatedPasswordType::class);
         $form->handleRequest($this->requestStack);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var string|mixed $password */
             $password = $form->getData();
             if (!is_string($password)) {
                 throw new UnexpectedValueException('Expected password to be a string.');

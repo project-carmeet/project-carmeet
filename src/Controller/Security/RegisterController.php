@@ -6,10 +6,12 @@ namespace App\Controller\Security;
 
 use App\Factory\UserFactory;
 use App\Form\Type\User\RegistrationType;
+use App\Model\Form\UserModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use UnexpectedValueException;
 
 final class RegisterController extends AbstractController
 {
@@ -41,7 +43,14 @@ final class RegisterController extends AbstractController
         $form->handleRequest($this->requestStack->getCurrentRequest());
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->userFactory->createFromUserModel($form->getData());
+            /** @var UserModel|mixed $data */
+            $data = $form->getData();
+            if (!$data instanceof UserModel) {
+                throw new UnexpectedValueException('Invalid object received as form data.');
+            }
+
+            $user = $this->userFactory->createFromUserModel($data);
+
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 

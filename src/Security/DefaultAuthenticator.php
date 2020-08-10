@@ -21,6 +21,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use UnexpectedValueException;
 
 final class DefaultAuthenticator extends AbstractFormLoginAuthenticator
 {
@@ -96,7 +97,13 @@ final class DefaultAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException('Invalid csrf token.');
         }
 
-        $user = $this->userRepository->findOneOrNullByEmail($credentials['email']);
+        /** @var string|mixed $email */
+        $email = $credentials['email'];
+        if (!is_string($email)) {
+            throw new UnexpectedValueException('Expected email credential to be a string.');
+        }
+
+        $user = $this->userRepository->findOneOrNullByEmail($email);
         if (null === $user) {
             throw new CustomUserMessageAuthenticationException('No user found.');
         }

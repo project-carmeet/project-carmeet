@@ -48,7 +48,7 @@ final class UserFixtures extends Fixture
     }
 
     /**
-     * @param array<string>|null $roles
+     * @param array<int, string>|null $roles
      */
     private function createUser(string $username, ?array $roles = null): User
     {

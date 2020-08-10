@@ -11,6 +11,7 @@ use App\Security\Role;
 use LogicException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use UnexpectedValueException;
 
 final class EventVoter extends Voter
 {
@@ -22,11 +23,12 @@ final class EventVoter extends Voter
         return ($subject instanceof Event || null === $subject) && EventAction::isAction($attribute);
     }
 
-    /**
-     * @param Event|null $subject
-     */
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
+        if (null !== $subject && !$subject instanceof Event) {
+            throw new UnexpectedValueException(sprintf('Expected subject to be an instance of "%s".', Event::class));
+        }
+
         if ($attribute === EventAction::VIEW) {
             return true;
         }

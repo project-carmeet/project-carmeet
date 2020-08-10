@@ -45,6 +45,7 @@ final class ForgotPasswordController extends AbstractController
         $form->handleRequest($this->requestStack->getCurrentRequest());
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var ForgotPasswordModel|mixed $data */
             $data = $form->getData();
             if (!$data instanceof ForgotPasswordModel) {
                 throw new UnexpectedValueException('Invalid object received as form data.');

@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class LogoutController extends AbstractController
 {
-    public function __invoke()
+    public function __invoke(): void
     {
         throw new LogicException('This should be intercepted by the firewall.');
     }
