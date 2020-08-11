@@ -85,10 +85,9 @@ jobs:
                     host: ${{ secrets.PRODUCTION_HOST }}
                     username: ${{ secrets.PRODUCTION_USERNAME }}
                     key: ${{ secrets.PRIVATE_KEY }}
-                    env:
-                        SOURCE_DIR: /www/project-carmeet
-                        LOCAL_ENV: /www/project-carmeet/config/.env.local
                     script: |
+                        export SOURCE_DIR=/www/project-carmeet
+                        export LOCAL_ENV=/www/project-carmeet/config/.env.local
                         cd ${SOURCE_DIR}
                         export DATE=`date '+%F_%H%M%S'`
                         unzip ./release.zip -d release-${DATE}
