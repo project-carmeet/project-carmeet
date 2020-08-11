@@ -79,3 +79,24 @@ jobs:
                     key: ${{ secrets.PRIVATE_KEY }}
                     source: "release.zip"
                     target: "/www/project-carmeet"
+            -   name: executing remote ssh commands using password
+                uses: appleboy/ssh-action@master
+                with:
+                    host: ${{ secrets.PRODUCTION_HOST }}
+                    username: ${{ secrets.PRODUCTION_USERNAME }}
+                    key: ${{ secrets.PRIVATE_KEY }}
+                    env:
+                        SOURCE_DIR: /www/project-carmeet
+                        LOCAL_ENV: /www/project-carmeet/config/.env.local
+                    script: |
+                        cd ${SOURCE_DIR}
+                        export DATE=`date '+%F_%H%M%S'`
+                        unzip ./release.zip -d release-${DATE}
+                        ln -s ${LOCAL_ENV} ${SOURCE_DIR}/release-${DATE}/.env.local
+                        rm ${SOURCE_DIR}/release.zip
+                        cd ${SOURCE_DIR}/release-${DATE}
+                        php bin/console cache:warmup
+                        php bin/console doctrine:migrations:migrate --no-interaction
+                        cd ${SOURCE_DIR}
+                        rm ${SOURCE_DIR}/current
+                        ln -s ${SOURCE_DIR}/release-${DATE} ${SOURCE_DIR}/current
