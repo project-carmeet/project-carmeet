@@ -58,7 +58,7 @@ jobs:
                 env:
                     APP_ENV: prod
             -   name: Create deployment package
-                run: tar --exclude='./var' -czvf package.tar.gz ./
+                run: tar --exclude='./var' --warning=no-file-changed -czvf package.tar.gz ./
             -   name: Upload artifact
                 uses: actions/upload-artifact@v2
                 with:
