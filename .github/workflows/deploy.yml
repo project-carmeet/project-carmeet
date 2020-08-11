@@ -60,9 +60,11 @@ jobs:
             -   name: Create package
                 uses: thedoctor0/zip-release@master
                 with:
+                    type: tar
+                    filename: 'release.tar.gz'
                     exclusions: '*.git* /*var/*'
             -   name: Upload artifact
                 uses: actions/upload-artifact@v2
                 with:
                     name: Package
-                    path: package.tar.gz
+                    path: release.tar.gz
