@@ -41,8 +41,9 @@ jobs:
                     DATABASE_URL: mysql://root:root@127.0.0.1:3306/project-carmeet
 
     deploy:
-        needs: ['tests']
+        name: 'Deploy'
         runs_on: ubuntu-latest
+        needs: ['tests']
         steps:
             -   name: Setup PHP, with composer and extensions
                 uses: shivammathur/setup-php@v1
