@@ -42,7 +42,7 @@ jobs:
 
     deploy:
         name: 'Deploy'
-        runs_on: ubuntu-latest
+        runs-on: ubuntu-latest
         needs: ['tests']
         steps:
             -   name: Setup PHP, with composer and extensions
