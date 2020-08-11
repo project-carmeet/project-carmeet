@@ -55,6 +55,8 @@ jobs:
             -   uses: actions/checkout@v1
             -   name: Install dependencies
                 run: composer install --no-dev --prefer-dist --no-progress --no-suggest
+                env:
+                    APP_ENV: prod
             -   name: Create deployment package
                 run: tar --exclude='./var' -czvf package.tar.gz ./
             -   name: Upload artifact
