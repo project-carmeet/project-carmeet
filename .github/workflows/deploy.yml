@@ -60,7 +60,6 @@ jobs:
             -   name: Create package
                 uses: thedoctor0/zip-release@master
                 with:
-                    filename: 'package.tar.gz'
                     exclusions: '*.git* /*var/*'
             -   name: Upload artifact
                 uses: actions/upload-artifact@v2
