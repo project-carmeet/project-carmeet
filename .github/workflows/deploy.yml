@@ -1,0 +1,63 @@
+name: Deploy
+
+on:
+    workflow_dispatch: ~
+
+jobs:
+    tests:
+        name: 'Tests (PHP: 7.4, MySQL: 5.7)'
+        runs-on: ubuntu-latest
+        services:
+            mysql:
+                image: mysql:5.7
+                env:
+                    MYSQL_ALLOW_EMPTY_PASSWORD: false
+                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_DATABASE: project-carmeet
+                ports:
+                    - 3306:3306
+        steps:
+            -   name: Setup PHP, with composer and extensions
+                uses: shivammathur/setup-php@v1
+                with:
+                    php-version: 7.4
+                    extension-csv: mbstring, xml, ctype, iconv, mysql, curl, intl
+                    coverage: pcov
+
+            -   uses: actions/checkout@v1
+
+            -   name: Install dependencies
+                run: composer install --prefer-dist --no-progress --no-suggest
+
+            -   name: Run Migration
+                run: php bin/console dev:load_data
+                env:
+                    DATABASE_URL: mysql://root:root@127.0.0.1:3306/project-carmeet
+
+            -   name: PHP Unit
+                run: composer run phpunit
+                env:
+                    SYMFONY_DEPRECATIONS_HELPER: disabled
+                    DATABASE_URL: mysql://root:root@127.0.0.1:3306/project-carmeet
+
+    deploy:
+        needs: ['tests']
+        runs_on: ubuntu-latest
+        steps:
+            -   name: Setup PHP, with composer and extensions
+                uses: shivammathur/setup-php@v1
+                with:
+                    php-version: 7.4
+                    extension-csv: mbstring, xml, ctype, iconv, mysql, curl, intl
+                    coverage: pcov
+
+            -   uses: actions/checkout@v1
+            -   name: Install dependencies
+                run: composer install --no-dev --prefer-dist --no-progress --no-suggest
+            -   name: Create deployment package
+                run: tar --exclude='./var' -czvf package.tar.gz ./
+            -   name: Upload artifact
+                uses: actions/upload-artifact@v2
+                with:
+                    name: package
+                    path: package.tar.gz
