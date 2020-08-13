@@ -4,6 +4,10 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services
         https://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
+        <defaults>
+            <tag name="form.type"/>
+        </defaults>
+
         <service id="app.form_type.event.event" class="App\Form\Type\Event\EventType"/>
 
         <service id="app.form_type.user.forgot_password" class="App\Form\Type\User\ForgotPasswordType"/>
