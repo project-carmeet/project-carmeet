@@ -58,6 +58,7 @@ class Kernel extends BaseKernel
         $loader->load($confDir . '/services/form_types.xml');
         $loader->load($confDir . '/services/repositories.xml');
         $loader->load($confDir . '/services/security.xml');
+        $loader->load($confDir . '/services/subscribers.xml');
     }
 
     /**

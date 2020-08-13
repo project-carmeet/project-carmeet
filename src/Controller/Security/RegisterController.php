@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Security;
 
-use App\Factory\UserFactory;
+use App\Event\User\RegisterEvent;
 use App\Form\Type\User\RegistrationType;
 use App\Model\Form\UserModel;
-use Doctrine\ORM\EntityManagerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,23 +18,17 @@ final class RegisterController extends AbstractController
     /**
      * @var RequestStack
      */
-    protected $requestStack;
+    private $requestStack;
 
     /**
-     * @var EntityManagerInterface
+     * @var EventDispatcherInterface
      */
-    protected $entityManager;
+    private $eventDispatcher;
 
-    /**
-     * @var UserFactory
-     */
-    protected $userFactory;
-
-    public function __construct(RequestStack $requestStack, EntityManagerInterface $entityManager, UserFactory $userFactory)
+    public function __construct(RequestStack $requestStack, EventDispatcherInterface $eventDispatcher)
     {
         $this->requestStack = $requestStack;
-        $this->entityManager = $entityManager;
-        $this->userFactory = $userFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(): Response
@@ -49,12 +43,10 @@ final class RegisterController extends AbstractController
                 throw new UnexpectedValueException('Invalid object received as form data.');
             }
 
-            $user = $this->userFactory->createFromUserModel($data);
+            $event = new RegisterEvent($data);
+            $this->eventDispatcher->dispatch($event);
 
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
-
-            $this->addFlash('success', 'New user has been registered with uuid ' . $user->getId() . '.');
+            $this->addFlash('success', 'New user has been registered with uuid ' . $event->getUser()->getId() . '.');
 
             return $this->redirectToRoute('app_login');
         }

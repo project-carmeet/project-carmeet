@@ -5,53 +5,44 @@ declare(strict_types=1);
 namespace App\Controller\Event;
 
 use App\Entity\Event;
+use App\Event\Event\CancelEvent;
 use App\Repository\EventRepository;
 use App\Security\EventAction;
-use DateTimeImmutable;
-use Doctrine\ORM\EntityManagerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 final class CancelController extends AbstractController
 {
     /**
-     * @var EntityManagerInterface
+     * @var EventDispatcherInterface
      */
-    protected $entityManager;
+    protected $eventDispatcher;
 
     /**
      * @var EventRepository
      */
     protected $eventRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, EventRepository $eventRepository)
+    public function __construct(EventDispatcherInterface $eventDispatcher, EventRepository $eventRepository)
     {
-        $this->entityManager = $entityManager;
+        $this->eventDispatcher = $eventDispatcher;
         $this->eventRepository = $eventRepository;
     }
 
     public function __invoke(string $id): Response
-    {
-        $event = $this->getEvent($id);
-
-        $this->denyAccessUnlessGranted(EventAction::CANCEL, $event);
-
-        $event->setCancellationDate(new DateTimeImmutable());
-        $this->entityManager->persist($event);
-        $this->entityManager->flush();
-
-        return $this->redirectToRoute('app_event_view', [
-            'id' => $event->getId(),
-        ]);
-    }
-
-    private function getEvent(string $id): Event
     {
         $event = $this->eventRepository->find($id);
         if (!$event instanceof Event) {
             throw $this->createNotFoundException(sprintf('Could not find event by id "%s".', $id));
         }
 
-        return $event;
+        $this->denyAccessUnlessGranted(EventAction::CANCEL, $event);
+
+        $this->eventDispatcher->dispatch(new CancelEvent($event));
+
+        return $this->redirectToRoute('app_event_view', [
+            'id' => $event->getId(),
+        ]);
     }
 }

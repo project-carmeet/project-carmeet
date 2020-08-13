@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Controller\Event;
 
 use App\Entity\User;
-use App\Factory\EventFactory;
+use App\Event\Event\CreateEvent;
 use App\Form\Type\Event\EventType;
 use App\Model\Form\EventModel;
 use App\Security\EventAction;
-use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,23 +24,16 @@ final class CreateController extends AbstractController
     private $requestStack;
 
     /**
-     * @var EntityManagerInterface
+     * @var EventDispatcherInterface
      */
-    private $entityManager;
-
-    /**
-     * @var EventFactory
-     */
-    private $eventFactory;
+    protected $eventDispatcher;
 
     public function __construct(
         RequestStack $requestStack,
-        EntityManagerInterface $entityManager,
-        EventFactory $eventFactory
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->requestStack = $requestStack;
-        $this->entityManager = $entityManager;
-        $this->eventFactory = $eventFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(): Response
@@ -48,6 +41,7 @@ final class CreateController extends AbstractController
         $this->denyAccessUnlessGranted(EventAction::CREATE);
 
         $form = $this->createForm(EventType::class, new EventModel($this->getUserEntity()));
+
         $form->handleRequest($this->requestStack->getCurrentRequest());
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var EventModel|mixed $data */
@@ -56,12 +50,11 @@ final class CreateController extends AbstractController
                 throw new UnexpectedValueException(sprintf('Expected form data to be instance of "%s".', EventModel::class));
             }
 
-            $event = $this->eventFactory->createEntityFromEventModel($data);
-            $this->entityManager->persist($event);
-            $this->entityManager->flush();
+            $createEvent = new CreateEvent($data);
+            $this->eventDispatcher->dispatch($createEvent);
 
             return $this->redirectToRoute('app_event_view', [
-                'id' => $event->getId(),
+                'id' => $createEvent->getEvent()->getId(),
             ]);
         }
 
