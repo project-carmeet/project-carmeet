@@ -108,6 +108,10 @@ final class DefaultAuthenticator extends AbstractFormLoginAuthenticator
             throw new CustomUserMessageAuthenticationException('No user found.');
         }
 
+        if (!$user->isActive()) {
+            throw new CustomUserMessageAuthenticationException('User is not activated.');
+        }
+
         return $user;
     }
 

@@ -62,6 +62,20 @@ class User implements UserInterface, ResetPasswordTokenAware
     protected $roles;
 
     /**
+     * @ORM\Column(type="boolean", nullable=false)
+     *
+     * @var bool
+     */
+    protected $active;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string|null
+     */
+    protected $activationToken;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      *
      * @var string|null
@@ -85,6 +99,7 @@ class User implements UserInterface, ResetPasswordTokenAware
         $this->email = $email;
         $this->salt = $salt;
         $this->roles = $roles;
+        $this->active = false;
     }
 
     public function getId(): string
@@ -219,6 +234,35 @@ class User implements UserInterface, ResetPasswordTokenAware
     {
         $this->resetPasswordToken = null;
         $this->resetPasswordTimestamp = null;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): void
+    {
+        $this->active = $active;
+    }
+
+    public function hasActivationToken(): bool
+    {
+        return null !== $this->activationToken;
+    }
+
+    public function getActivationToken(): string
+    {
+        if (null === $this->activationToken) {
+            throw new LogicException('No activation token has been set.');
+        }
+
+        return $this->activationToken;
+    }
+
+    public function setActivationToken(?string $activationToken): void
+    {
+        $this->activationToken = $activationToken;
     }
 
     /**

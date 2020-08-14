@@ -23,6 +23,8 @@
         <service id="app.subscriber.user.register" class="App\Subscriber\User\RegisterSubscriber">
             <argument type="service" id="Doctrine\ORM\EntityManagerInterface"/>
             <argument type="service" id="security.password_encoder"/>
+            <argument type="service" id="router"/>
+            <argument type="service" id="swiftmailer.mailer"/>
         </service>
 
         <service id="app.subscriber.user.reset_passord" class="App\Subscriber\User\ResetPassordSubscriber">
@@ -31,6 +33,12 @@
         </service>
 
         <service id="app.subscriber.user.forgot_password" class="App\Subscriber\User\ForgotPasswordSubscriber">
+            <argument type="service" id="Doctrine\ORM\EntityManagerInterface"/>
+            <argument type="service" id="router"/>
+            <argument type="service" id="swiftmailer.mailer"/>
+        </service>
+
+        <service id="app.subscriber.user.activation" class="App\Subscriber\User\ActivationSubscriber">
             <argument type="service" id="Doctrine\ORM\EntityManagerInterface"/>
             <argument type="service" id="router"/>
             <argument type="service" id="swiftmailer.mailer"/>

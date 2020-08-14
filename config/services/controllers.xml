@@ -98,6 +98,16 @@
             </call>
         </service>
 
+        <service id="app.controller.security.account_activation"
+                 class="App\Controller\Security\AccountActivationController">
+            <argument type="service" id="app.repository.user"/>
+            <argument type="service" id="event_dispatcher"/>
+
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
         <service id="app.controller.home" class="App\Controller\HomeController">
             <argument type="service" id="app.repository.event"/>
 

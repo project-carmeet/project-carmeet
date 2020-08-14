@@ -35,13 +35,16 @@ final class UserFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
-        $admin = $this->createUser('admin', [Role::USER, Role::ADMIN]);
+        $admin = $this->createUser('admin', true, [Role::USER, Role::ADMIN]);
         $manager->persist($admin);
 
-        $newUser = $this->createUser('new_user');
+        $newUser = $this->createUser('new_user', true);
         $manager->persist($newUser);
 
-        $existingUser = $this->createUser('existing_user');
+        $existingUser = $this->createUser('existing_user', true);
+        $manager->persist($existingUser);
+
+        $existingUser = $this->createUser('inactive', false);
         $manager->persist($existingUser);
 
         $manager->flush();
@@ -50,13 +53,14 @@ final class UserFixtures extends Fixture
     /**
      * @param array<int, string>|null $roles
      */
-    private function createUser(string $username, ?array $roles = null): User
+    private function createUser(string $username, bool $active, ?array $roles = null): User
     {
         $user = new User($username, sprintf('%s@carmeet.internal', $username));
 
         $password = $this->encoder->encodePassword($user, $username);
         $user->setPassword($password);
         $user->setRoles($roles ?? [Role::USER]);
+        $user->setActive($active);
 
         $this->setReference(static::createReferenceKey($username), $user);
 

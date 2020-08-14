@@ -23,6 +23,10 @@
         <default key="_controller">app.controller.security.change_password</default>
     </route>
 
+    <route id="app_security_account_activation" path="/activate/{token}">
+        <default key="_controller">app.controller.security.account_activation</default>
+    </route>
+
     <route id="app_logout" path="/logout">
         <default key="_controller">app.controller.security.logout</default>
     </route>

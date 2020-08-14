@@ -20,7 +20,6 @@ final class RegisterTest extends WebTestCase
         $password = 'some-password';
 
         $client = self::createClient();
-        $client->followRedirects();
         $client->request(Request::METHOD_GET, '/register');
 
         $form = $client->getCrawler()->selectButton('Register')->form([
@@ -30,11 +29,24 @@ final class RegisterTest extends WebTestCase
             'registration[password][second]' => $password,
         ]);
 
+        $client->enableProfiler();
         $client->submit($form);
 
+        /** @var MessageDataCollector $profile */
+        $profile = $client->getProfile()->getCollector('swiftmailer');
+        $messages = $profile->getMessages();
+        self::assertCount(1, $messages);
+
+        /** @var Swift_Message $message */
+        $message = reset($messages);
+        $body = new Crawler($message->getBody());
+        $activationLink = $body->filter('a')->attr('href');
+
+        $client->followRedirects();
+        $crawler = $client->request(Request::METHOD_GET, $activationLink);
         self::assertThat($client, new PathEquals('/login'));
 
-        $form = $client->getCrawler()->selectButton('Sign in')->form([
+        $form = $crawler->selectButton('Sign in')->form([
             'email' => $email,
             'password' => $password,
         ]);

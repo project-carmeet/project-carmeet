@@ -31,6 +31,23 @@ final class LoginTest extends WebTestCase
         self::assertThat($client, new PathEquals('/'));
     }
 
+    public function testLoginWithInactiveUser(): void
+    {
+        $client = self::createClient();
+        $client->followRedirects();
+        $client->request(Request::METHOD_GET, '/login');
+
+        $form = $client->getCrawler()->selectButton('Sign in')->form([
+            'email' => 'inactive@carmeet.internal',
+            'password' => 'inactive',
+        ]);
+
+        $crawler = $client->submit($form);
+        self::assertThat($client, new PathEquals('/login'));
+
+        self::assertStringContainsString('User is not activated.', $crawler->text());
+    }
+
     /**
      * @return array<mixed>
      */
