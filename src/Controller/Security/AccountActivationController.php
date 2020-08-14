@@ -6,8 +6,8 @@ namespace App\Controller\Security;
 
 use App\Event\User\ActivateEvent;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class AccountActivationController extends AbstractController
@@ -15,17 +15,12 @@ final class AccountActivationController extends AbstractController
     /**
      * @var UserRepository
      */
-    protected $userRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
+    private $userRepository;
 
     /**
      * @var EventDispatcherInterface
      */
-    protected $eventDispatcher;
+    private $eventDispatcher;
 
     public function __construct(
         UserRepository $userRepository,
@@ -35,7 +30,7 @@ final class AccountActivationController extends AbstractController
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function __invoke(string $token)
+    public function __invoke(string $token): Response
     {
         $user = $this->userRepository->findOneOrNullByActivationToken($token);
         if (null === $user) {
