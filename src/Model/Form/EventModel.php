@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Model\Form;
 
+use App\Entity\Event;
 use App\Entity\User;
+use DateTime;
 use DateTimeInterface;
 
 final class EventModel
@@ -37,6 +39,17 @@ final class EventModel
     public function __construct(User $user)
     {
         $this->user = $user;
+    }
+
+    public static function createFromEntity(Event $event): self
+    {
+        $model = new EventModel($event->getUser());
+        $model->setName($event->getName());
+        $model->setDescription($event->getDescription());
+        $model->setDateFrom(new DateTime('@' . $event->getDateFrom()->getTimestamp()));
+        $model->setDateUntil(new DateTime('@' . $event->getDateUntil()->getTimestamp()));
+
+        return $model;
     }
 
     public function getUser(): User

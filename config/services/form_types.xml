@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        https://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults>
+            <tag name="form.type"/>
+        </defaults>
+
+        <service id="app.form_type.event.event" class="App\Form\Type\Event\EventType"/>
+
+        <service id="app.form_type.user.forgot_password" class="App\Form\Type\User\ForgotPasswordType"/>
+
+        <service id="app.form_type.user.registration" class="App\Form\Type\User\RegistrationType">
+            <argument type="service" id="app.repository.user"/>
+        </service>
+
+        <service id="app.form_type.user.repeated_password" class="App\Form\Type\User\RepeatedPasswordType"/>
+
+        <service id="app.form_type.user.unique_email" class="App\Form\Type\User\UniqueEmailType">
+            <argument type="service" id="app.repository.user"/>
+        </service>
+
+        <service id="app.form_type.user.unique_username" class="App\Form\Type\User\UniqueUsernameType">
+            <argument type="service" id="app.repository.user"/>
+        </service>
+
+        <service id="app.form_type.user.username" class="App\Form\Type\User\UsernameType"/>
+    </services>
+</container>

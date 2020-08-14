@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        https://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="App\Repository\UserRepository" class="App\Repository\UserRepository">
+            <argument type="service" id="doctrine"/>
+
+            <tag name="doctrine.repository_service"/>
+        </service>
+
+        <service id="App\Repository\EventRepository" class="App\Repository\EventRepository">
+            <argument type="service" id="doctrine"/>
+
+            <tag name="doctrine.repository_service"/>
+        </service>
+
+        <service id="app.repository.user" alias="App\Repository\UserRepository"/>
+        <service id="app.repository.event" alias="App\Repository\EventRepository"/>
+    </services>
+</container>

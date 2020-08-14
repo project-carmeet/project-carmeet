@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        https://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults>
+            <tag name="kernel.event_subscriber"/>
+        </defaults>
+
+        <service id="app.subscriber.event.cancel" class="App\Subscriber\Event\CancelSubscriber">
+            <argument type="service" id="Doctrine\ORM\EntityManagerInterface"/>
+        </service>
+
+        <service id="app.subscriber.event.create" class="App\Subscriber\Event\CreateSubscriber">
+            <argument type="service" id="Doctrine\ORM\EntityManagerInterface"/>
+        </service>
+
+        <service id="app.subscriber.event.edit" class="App\Subscriber\Event\EditSubscriber">
+            <argument type="service" id="Doctrine\ORM\EntityManagerInterface"/>
+        </service>
+
+        <service id="app.subscriber.user.register" class="App\Subscriber\User\RegisterSubscriber">
+            <argument type="service" id="Doctrine\ORM\EntityManagerInterface"/>
+            <argument type="service" id="security.password_encoder"/>
+        </service>
+
+        <service id="app.subscriber.user.reset_passord" class="App\Subscriber\User\ResetPassordSubscriber">
+            <argument type="service" id="security.password_encoder"/>
+            <argument type="service" id="Doctrine\ORM\EntityManagerInterface"/>
+        </service>
+
+        <service id="app.subscriber.user.forgot_password" class="App\Subscriber\User\ForgotPasswordSubscriber">
+            <argument type="service" id="Doctrine\ORM\EntityManagerInterface"/>
+            <argument type="service" id="router"/>
+            <argument type="service" id="swiftmailer.mailer"/>
+        </service>
+    </services>
+</container>

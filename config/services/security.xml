@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        https://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="app.authentication.reset_token_validator" class="App\Service\Authentication\ResetTokenValidator"/>
+
+        <service id="app.authentication.default_authenticator" class="App\Security\DefaultAuthenticator">
+            <argument type="service" id="app.repository.user"/>
+            <argument type="service" id="router"/>
+            <argument type="service" id="security.csrf.token_manager"/>
+            <argument type="service" id="security.password_encoder"/>
+        </service>
+
+        <service id="app.authorization.voter.event" class="App\Security\Voter\EventVoter">
+            <tag name="security.voter"/>
+        </service>
+    </services>
+</container>

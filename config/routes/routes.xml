@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing
+        https://symfony.com/schema/routing/routing-1.0.xsd">
+    <route id="app_homepage" path="/">
+        <default key="_controller">app.controller.home</default>
+    </route>
+
+    <route id="app_login" path="/login">
+        <default key="_controller">app.controller.security.login</default>
+    </route>
+
+    <route id="app_register" path="/register">
+        <default key="_controller">app.controller.security.register</default>
+    </route>
+
+    <route id="app_security_forgot_password" path="/forgot-password">
+        <default key="_controller">app.controller.security.forgot_password</default>
+    </route>
+
+    <route id="app_security_change_password" path="/change-password/{token}">
+        <default key="_controller">app.controller.security.change_password</default>
+    </route>
+
+    <route id="app_logout" path="/logout">
+        <default key="_controller">app.controller.security.logout</default>
+    </route>
+
+    <route id="app_event_create" path="/event/create">
+        <default key="_controller">app.controller.event.create</default>
+    </route>
+
+    <route id="app_event_view" path="/event/view/{id}">
+        <default key="_controller">app.controller.event.view</default>
+    </route>
+
+    <route id="app_event_edit" path="/event/edit/{id}">
+        <default key="_controller">app.controller.event.edit</default>
+    </route>
+
+    <route id="app_event_cancel" path="/event/cancel/{id}">
+        <default key="_controller">app.controller.event.cancel</default>
+    </route>
+
+    <route id="app_event_reopen" path="/event/reopen/{id}">
+        <default key="_controller">app.controller.event.reopen</default>
+    </route>
+</routes>

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Security;
 
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,15 +21,16 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use UnexpectedValueException;
 
 final class DefaultAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
     /**
-     * @var EntityManagerInterface
+     * @var UserRepository
      */
-    private $entityManager;
+    private $userRepository;
 
     /**
      * @var UrlGeneratorInterface
@@ -48,12 +48,12 @@ final class DefaultAuthenticator extends AbstractFormLoginAuthenticator
     private $encoder;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
+        UserRepository $userRepository,
         UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
         UserPasswordEncoderInterface $encoder
     ) {
-        $this->entityManager = $entityManager;
+        $this->userRepository = $userRepository;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->encoder = $encoder;
@@ -97,11 +97,14 @@ final class DefaultAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException('Invalid csrf token.');
         }
 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy([
-            'email' => $credentials['email'],
-        ]);
+        /** @var string|mixed $email */
+        $email = $credentials['email'];
+        if (!is_string($email)) {
+            throw new UnexpectedValueException('Expected email credential to be a string.');
+        }
 
-        if (!$user instanceof User) {
+        $user = $this->userRepository->findOneOrNullByEmail($email);
+        if (null === $user) {
             throw new CustomUserMessageAuthenticationException('No user found.');
         }
 

@@ -41,12 +41,24 @@ class Kernel extends BaseKernel
         $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
         $container->setParameter('container.dumper.inline_class_loader', $this->debug);
         $container->setParameter('container.dumper.inline_factories', true);
+
         $confDir = $this->getProjectDir() . '/config';
 
         $loader->load($confDir . '/{packages}/*' . self::CONFIG_EXTS, 'glob');
         $loader->load($confDir . '/{packages}/' . $this->environment . '/*' . self::CONFIG_EXTS, 'glob');
-        $loader->load($confDir . '/{services}' . self::CONFIG_EXTS, 'glob');
-        $loader->load($confDir . '/{services}_' . $this->environment . self::CONFIG_EXTS, 'glob');
+
+        if ('dev' === $this->environment || 'test' === $this->environment) {
+            $loader->load($confDir . '/services/dev/commands.xml');
+            $loader->load($confDir . '/services/dev/fixtures.xml');
+        }
+
+        $loader->load($confDir . '/services/controllers.xml');
+        $loader->load($confDir . '/services/factories.xml');
+        $loader->load($confDir . '/services/mappers.xml');
+        $loader->load($confDir . '/services/form_types.xml');
+        $loader->load($confDir . '/services/repositories.xml');
+        $loader->load($confDir . '/services/security.xml');
+        $loader->load($confDir . '/services/subscribers.xml');
     }
 
     /**
@@ -56,8 +68,10 @@ class Kernel extends BaseKernel
     {
         $confDir = $this->getProjectDir() . '/config';
 
-        $routes->import($confDir . '/{routes}/' . $this->environment . '/*' . self::CONFIG_EXTS, '/', 'glob');
-        $routes->import($confDir . '/{routes}/*' . self::CONFIG_EXTS, '/', 'glob');
-        $routes->import($confDir . '/{routes}' . self::CONFIG_EXTS, '/', 'glob');
+        if ('dev' === $this->environment || 'test' === $this->environment) {
+            $routes->import($confDir . '/routes/routes_dev.xml');
+        }
+
+        $routes->import($confDir . '/routes/routes.xml');
     }
 }

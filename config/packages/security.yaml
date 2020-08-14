@@ -15,10 +15,11 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: lazy
+            anonymous: true
+            lazy: true
             guard:
                 authenticators:
-                    - App\Security\DefaultAuthenticator
+                    - app.authentication.default_authenticator
             logout:
                 path: app_logout
                 target: app_homepage
