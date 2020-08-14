@@ -1,3 +1,6 @@
+// BIEMMM importing bootstrap, because why reinvent the wheel?
+@import "bootstrap/bootstrap";
+
 // Imports
 @import "variables";
 @import "mixins";
@@ -8,14 +11,18 @@
 @import "atoms/typography";
 
 // Molecules
-@import "molecules/cards";
+@import "molecules/form-control";
 
 // Organisms
+@import "organisms/blocks";
 @import "organisms/jumbotron";
-@import "organisms/navbar";
 
 body {
   background: $bg-body;
   color: $color-light;
   font-family: $font-family-base;
+}
+
+.color-dark {
+  color: $color-dark;
 }
