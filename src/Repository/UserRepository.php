@@ -43,4 +43,11 @@ final class UserRepository extends ServiceEntityRepository
             'resetPasswordToken' => $token,
         ]);
     }
+
+    public function findOneOrNullByActivationToken(string $token): ?User
+    {
+        return $this->findOneBy([
+            'activationToken' => $token,
+        ]);
+    }
 }

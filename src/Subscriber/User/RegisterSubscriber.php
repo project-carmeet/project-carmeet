@@ -7,7 +7,11 @@ namespace App\Subscriber\User;
 use App\Entity\User;
 use App\Event\User\RegisterEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use Ramsey\Uuid\Uuid;
+use Swift_Mailer;
+use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use UnexpectedValueException;
 
@@ -23,10 +27,26 @@ final class RegisterSubscriber implements EventSubscriberInterface
      */
     private $userPasswordEncoder;
 
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoderInterface $userPasswordEncoder)
-    {
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private $urlGenerator;
+
+    /**
+     * @var Swift_Mailer
+     */
+    private $mailer;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        UserPasswordEncoderInterface $userPasswordEncoder,
+        UrlGeneratorInterface $urlGenerator,
+        Swift_Mailer $mailer
+    ) {
         $this->entityManager = $entityManager;
         $this->userPasswordEncoder = $userPasswordEncoder;
+        $this->mailer = $mailer;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -35,7 +55,10 @@ final class RegisterSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            RegisterEvent::class => ['register'],
+            RegisterEvent::class => [
+                ['register', 2],
+                ['sendActivationEmail', 1],
+            ],
         ];
     }
 
@@ -65,5 +88,28 @@ final class RegisterSubscriber implements EventSubscriberInterface
         $this->entityManager->flush();
 
         $registerEvent->setUser($user);
+    }
+
+    public function sendActivationEmail(RegisterEvent $event): void
+    {
+        $user = $event->getUser();
+        $user->setActivationToken(Uuid::uuid4()->toString());
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        $messsage = new Swift_Message('Forgot password', sprintf(
+            'To activate this account, use <a href="%s">this link.</a>',
+            $this->urlGenerator->generate('app_security_account_activation', [
+                'token' => $user->getActivationToken(),
+            ], UrlGeneratorInterface::ABSOLUTE_URL)
+        ));
+
+        $messsage->setContentType('text/html');
+
+        $messsage->setFrom('hello_world@carmeet.internal');
+        $messsage->setTo($user->getEmail());
+
+        $this->mailer->send($messsage);
     }
 }
