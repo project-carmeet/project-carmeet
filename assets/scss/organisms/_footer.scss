@@ -1,0 +1,17 @@
+.footer {
+  background: $bg-active;
+  margin-top: 60px;
+  padding: 40px 0 0;
+
+  .footer-disclaimer {
+    background: $bg-dark;
+    margin-top: 20px;
+    padding: 15px 0;
+  }
+
+  @include breakpoint($break-md, false) {
+    .footer-disclaimer {
+      margin-top: 60px;
+    }
+  }
+}

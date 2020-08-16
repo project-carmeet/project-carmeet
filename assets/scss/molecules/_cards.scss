@@ -1,71 +1,96 @@
 .card {
-  background-color: $bg-content;
   border: none;
   border-radius: 0;
   color: $color-light;
+  display: block;
+  height: 200px;
+  margin-bottom: 20px;
+  overflow: hidden;
 
   &:hover {
-    box-shadow: rgba(0, 0, 0, 0.5) 0 5px 10px 2px;
-    text-decoration: none;
+    border-bottom: 0;
+    color: $color-secondary;
+  }
+
+  .card-img-top {
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+  }
+
+  .card-img-overlay {
+    background: linear-gradient(transparent, rgb(0 0 0 / 30%));
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .card-title {
+    align-self: flex-end;
+    font-weight: $font-weight-bold;
+    display: inline-block;
+    margin: 15px 0 0;
   }
 
   .card-body {
-    padding: 15px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    .fas {
+      font-size: $font-size-h3;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+  }
+
+  .info {
+    display: inline-block;
+    margin-top: 15px;
+  }
+
+  @include breakpoint(false, $break-lg) {
+    .info {
+      font-size: $font-size-small;
+      margin-right: 20px;
+      margin-top: 10px;
+    }
+
+    .fas {
+      font-size: $font-size-large;
+    }
+  }
+
+  @include breakpoint($break-md, false) {
+    height: 250px;
+  }
+
+  @include breakpoint($break-lg, false) {
+    height: 350px;
+    margin-bottom: 30px;
 
     .card-title {
-      margin-bottom: 0;
+      font-size: $font-size-h2;
     }
 
-    .card-text {
-      font-size: $font-size-small;
-    }
-  }
-
-  &--action {
-    background: $bg-content;
-    color: $color-primary;
-    font-weight: $font-weight-bold;
-    text-align: center;
-  }
-}
-
-.event-card-container {
-  width: 100%;
-  overflow-x: scroll;
-  -ms-overflow-style: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  .event-card-wrapper {
-    @include breakpoint(false, $break-md--min) {
-      //TODO: make JS solution for the min-width being calculated by amount of events in 'card-wrapper'.
-      min-width: 2500px;
-      -webkit-backface-visibility: hidden;
+    .card-body {
+      bottom: 10px;
     }
 
-    .event-card {
-      display: inline-block;
-      width: 250px;
-      margin-right: 10px;
-      float: left;
+    .info {
+      display: block;
+    }
 
-      @include breakpoint($break-md, $break-lg--min) {
-        width: calc(50% - 10px);
-      }
-
-      @include breakpoint($break-lg, $break-xl--min) {
-        width: calc(33.33% - 10px);
-      }
-
-      @include breakpoint($break-xl, false) {
-        width: calc(25% - 10px);
-      }
-
-      &:last-of-type {
-        margin-right: 0;
-      }
+    .fas {
+      text-align: center;
+      width: 40px;
     }
   }
 }

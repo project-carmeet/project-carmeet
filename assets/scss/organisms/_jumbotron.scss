@@ -1,6 +1,7 @@
 .jumbotron {
-  overflow: hidden;
+  padding: 4rem 1rem 1rem;
   position: relative;
+  overflow: hidden;
 
   img {
     position: absolute;
@@ -8,15 +9,49 @@
     min-height: 100%;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%,-50%);
   }
 
   .jumbotron__overlay {
-    background: $bg-jumbotron-overlay;
+    background: linear-gradient(transparent, $bg-body);
     bottom: 0;
     left: 0;
     position: absolute;
     right: 0;
     top: 0;
+  }
+
+  .container {
+    position: relative;
+    padding: 0;
+  }
+
+  .lead {
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+  }
+
+  @include breakpoint($break-md, false) {
+    .container {
+      padding: 0 15px;
+    }
+  }
+
+  @include breakpoint($break-lg, false) {
+    padding: 10rem 2rem 3rem;
+
+    .lead {
+      font-size: $font-size-large;
+    }
+  }
+}
+
+.jumbotron--inline {
+  padding: 7rem 2rem;
+  min-height: 350px;
+
+  @include breakpoint($break-lg, false) {
+    padding: 12rem 2rem;
+    min-height: 450px;
   }
 }

@@ -50,6 +50,13 @@
   text-transform: capitalize;
 }
 
-.text-uppercase {
-  text-transform: uppercase;
+.ds {
+  &-block {
+    display: block;
+    width: 100%;
+  }
+
+  &-flex {
+    display: flex;
+  }
 }

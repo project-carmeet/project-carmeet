@@ -12,10 +12,13 @@
 
 // Molecules
 @import "molecules/form-control";
+@import "molecules/cards";
 
 // Organisms
 @import "organisms/blocks";
 @import "organisms/jumbotron";
+@import "organisms/navbar";
+@import "organisms/footer";
 
 body {
   background: $bg-body;
@@ -25,4 +28,12 @@ body {
 
 .color-dark {
   color: $color-dark;
+}
+
+.color-primary {
+  color: $color-primary;
+}
+
+.color-secondary {
+  color: $color-secondary;
 }

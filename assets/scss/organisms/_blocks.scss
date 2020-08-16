@@ -1,0 +1,19 @@
+.cb-container {
+  background: $bg-light;
+  color: $color-dark;
+  padding: 15px 20px 0;
+  margin: 0 0 20px;
+
+  &.cb-container--headless {
+    padding: 20px 20px 0;
+  }
+
+  &.cb-container--jumbotron {
+    margin-top: -50px;
+    position: relative;
+
+    @include breakpoint($break-lg, false) {
+      margin-top: -80px;
+    }
+  }
+}
