@@ -1,2 +1,5 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
+    globals:
+        map_api_key: '%env(resolve:MAP_API_KEY)%'
+        map_style: '%env(resolve:MAP_STYLE)%'

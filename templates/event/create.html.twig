@@ -2,11 +2,61 @@
 
 {% block title %}Create event{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+          crossorigin=""/>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin=""></script>
+
+    <script>
+        $(document).ready(() => {
+            const apiToken = $('meta[name="map-api-token"]').attr('content');
+            const style = $('meta[name="map-style"]').attr('content');
+
+            let locationPickerMap = L.map('map');
+
+            locationPickerMap.setView(L.latLng(52, 5), 7);
+            navigator.geolocation.getCurrentPosition((location) => {
+                const coords = location.coords;
+                locationPickerMap.setView(L.latLng(coords.latitude, coords.longitude), 11);
+            });
+
+            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ©<a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: style,
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: apiToken
+            }).addTo(locationPickerMap);
+
+            let marker = null;
+            locationPickerMap.on('click', (e) => {
+                if (null === marker) {
+                    marker = L.marker(e.latlng).addTo(locationPickerMap);
+                }
+
+                marker.setLatLng(e.latlng);
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <h2>Create event</h2>
         {{ form_start(form) }}
         {{ form_row(form) }}
+        <div id="map" style="width: 100%; height: 400px"></div>
         <button type="submit">Create</button>
         {{ form_end(form) }}
     </div>

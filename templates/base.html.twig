@@ -8,6 +8,9 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="mobile-web-app-capable" content="yes">
 
+        <meta name="map-api-token" content="{{ map_api_key }}">
+        <meta name="map-style" content="{{ map_style }}">
+
         {% block seo_robots %}
             <meta name="robots" content="index, follow"/>
         {% endblock %}
@@ -29,7 +32,7 @@
             </nav>
         {% endblock %}
 
-        {#TODO: move flashbag_messages to proper position / template #}
+        {# TODO: move flashbag_messages to proper position / template #}
         {% block flashbag_messages %}
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
@@ -43,7 +46,7 @@
         {% block javascripts %}
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
             <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-            {#            <script src="{{ asset('js/common.js') }}"></script>#}
+            {# <script src="{{ asset('js/common.js') }}"></script> #}
         {% endblock %}
     </body>
 </html>
