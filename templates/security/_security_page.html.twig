@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ pageTitle }}{% endblock %}
+
+{% block body %}
+    {% embed 'shared/jumbotron/_jumbotron.html.twig' %}
+        {% block picture %}
+            {% import 'macro/_picture_element.html.twig' as picture %}
+            {#TODO: make proper image-cut for each breakpoint#}
+            {{ picture.picture_element(
+                'homepagina jumbotron background',
+                'images/hero/background_default.jpg',
+                'images/hero/background_default.jpg',
+                'images/hero/background_default.jpg'
+            ) }}
+        {% endblock %}
+        {% block title %}
+            <h1 class="mt-4{% if subTitle is not defined or subTitle is empty %} mb-20{% endif %}">{{ pageTitle }}</h1>
+        {% endblock %}
+
+        {% block subtext %}
+            {% if subTitle is defined and subTitle is not empty %}
+                <p>{{ subTitle }}</p>
+            {% endif %}
+        {% endblock %}
+
+    {% endembed %}
+
+    <div class="container">
+        <div class="cb-container cb-container--jumbotron">
+            <div class="row">
+                {% block security_page_content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

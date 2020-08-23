@@ -19,6 +19,10 @@
     position: absolute;
     right: 0;
     top: 0;
+
+    &--full {
+      background: linear-gradient($bg-body, transparent, $bg-body);
+    }
   }
 
   .container {

@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="{{ path('app_homepage') }}">Project Carmeet</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMainMenu"
+            aria-controls="navbarMainMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"><i class="fas fa-bars"></i><span>menu</span></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMainMenu">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="{{ path('app_homepage') }}">Home</a>
+        </div>
+        <div class="navbar-actions">
+            {% if app.user %}
+                <a href="{{ path('app_logout') }}" class="mr-20">Uitloggen</a>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="mr-20">Inloggen</a>
+            {% endif %}
+            <a href="{{ path('app_event_create') }}" class="btn btn-secondary">Event organiseren</a>
+        </div>
+    </div>
+</nav>

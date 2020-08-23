@@ -1,11 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'security/_security_page.html.twig' %}
 
-{% block title %}Register!{% endblock %}
+{% set pageTitle = 'Account registreren' %}
+{% set subTitle = 'Maak gemakkelijk en snel een account aan zodat je meetings kunt organiseren.' %}
 
-{% block body %}
-    <h2>Register</h2>
-    {{ form_start(form) }}
-    {{ form_row(form) }}
-    <button type="submit">Register</button>
-    {{ form_end(form) }}
+{% block security_page_content %}
+    <div class="col-12">
+        {{ form_start(form) }}
+        {{ form_row(form) }}
+        <button type="submit" class="btn btn-primary mb-20">Registreren</button>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

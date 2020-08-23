@@ -2,71 +2,107 @@
 
 {% import 'macro/_event.html.twig' as event_macro %}
 
-{% block title %}Home{% endblock %}
-
 {% block body %}
     {% include 'homepage/_jumbotron_homepage.html.twig' %}
 
+    {#TODO: search form here, but like, a real form#}
     <div class="container">
+        <div class="cb-container cb-container--jumbotron">
+            <form class="needs-validation">
+                <div class="form-row">
+                    <div class="form-group col-12 col-md-3">
+                        <label for="search-name">Zoeken op naam</label>
+                        <input type="email" class="form-control" id="search-name">
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label for="search-area">Provincie</label>
+                        <select id="search-area" class="form-control">
+                            <option selected>Kies...</option>
+                            <option>Optie 1</option>
+                            <option>Optie 2</option>
+                            <option>Optie 3</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label for="search-time">Wanneer</label>
+                        <select id="search-time" class="form-control">
+                            <option selected>Choose...</option>
+                            <option>Option 1</option>
+                            <option>Option 2</option>
+                            <option>Option 3</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <button type="submit" class="btn btn-primary mb-20 inline-form-submit">Zoeken</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container mt-60">
         <div class="row">
             <div class="col-12">
-                <h2>Carmeets deze week</h2>
-                <p class="font-italic color-subtle small">Alle car meetings van de komende 7 dagen.</p>
+                <h2 class="color-secondary text-uppercase">Carmeets deze week</h2>
+            </div>
+            <div class="col-12">
+                <p>De car meetings voor de komende dagen.</p>
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="event-card-container mb-30">
-            <div class="event-card-wrapper">
-                {% for event in events %}
-                    {{ event_macro.card(event) }}
-                {% endfor %}
-
-                {% include 'shared/cards/_event_action_card.html.twig' with {
-                    title: 'Bekijk alle events',
-                    route: path('app_homepage'),
-                } %}
-            </div>
-        </div>
-    </div>
-
     <div class="container">
         <div class="row">
-            <div class="col-12">
-                <h2>Nieuwste carmeets</h2>
-                <p class="font-italic color-subtle small">De meest recent toegevoegde carmeets.</p>
-            </div>
+            {#TODO: clean all of this up, this is not pretty#}
+            {% set eventWidth = {1: 6, 2: 6, 3: 4, 4: 8, 5: 6, 6: 6, 7: 8, 8: 4} %}
+            {% set eventLayout = {1: 0, 2: 0, 3: 1, 4: 0, 5: 0, 6: 0, 7: 0, 8: 1} %}
+            {% set iconColor = {
+                1: 'color-primary',
+                2: 'color-secondary',
+                3: 'color-secondary',
+                4: 'color-primary',
+                5: 'color-primary',
+                6: 'color-secondary',
+                7: 'color-secondary',
+                8: 'color-primary'
+            } %}
+            {% for event in events %}
+                <div class="col-12 col-md-6 col-lg-{{ eventWidth[loop.index] }}">
+                    {{ event_macro.card(event, eventLayout[loop.index], iconColor[loop.index]) }}
+                </div>
+            {% endfor %}
         </div>
     </div>
     <div class="container">
-        <div class="event-card-container mb-30">
-            <div class="event-card-wrapper">
-                {% for event in events %}
-                    {{ event_macro.card(event) }}
-                {% endfor %}
-
-                {% include 'shared/cards/_event_action_card.html.twig' with {
-                    title: 'Bekijk alle events',
-                    route: path('app_homepage'),
-                } %}
+        <div class="row">
+            <div class="col-12 text-center mb-30 mt-20">
+                <p>Natuurlijk zijn er meer carmeets, zoek snel naar alle geregistreerde carmeets. Of organiseer zelf een meeting!</p>
+                {#TODO: Route to search page#}
+                <a href="#" class="mb-20 btn btn-primary">Bekijk alle meetings</a>
+                <a href="{{ path('app_event_create') }}" class="mb-20 btn btn-secondary">Organiseer een meeting</a>
             </div>
         </div>
     </div>
 
     {% include 'homepage/_jumbotron_homepage_inline.html.twig' %}
 
-    {# OLD DEMO STUFF BELOW #}
-    {% if app.user %}
-        <h3>
-            You are logged in as {{ app.user.username }}, if you do not like this click
-            <a href="{{ path('app_logout') }}">here</a>.
-        </h3>
-        <h3>
-            Create event by clicking
-            <a href="{{ path('app_event_create') }}">here</a>.
-        </h3>
-    {% else %}
-        <h3>To login click <a href="{{ path('app_login') }}">here</a>.</h3>
-        <h3>To register click <a href="{{ path('app_register') }}">here</a>.</h3>
-    {% endif %}
+    <div class="container mt-20">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="color-secondary text-uppercase">Nieuwste carmeets</h2>
+            </div>
+            <div class="col-12">
+                <p>De meest recent toegevoegde carmeets.</p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            {#TODO: clean all of this up, this is not pretty#}
+            {% for event in events %}
+                <div class="col-12 col-md-6 col-lg-6">
+                    {{ event_macro.card(event, null, iconColor[loop.index]) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

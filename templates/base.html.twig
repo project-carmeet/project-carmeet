@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Zoek car meetings bij jouw in de buurt{% endblock %} | Project Carmeet</title>
         <meta http-equiv="content-language" content="nl">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,18 +15,12 @@
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
                   integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
                   crossorigin="anonymous">
-            <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
             <link rel="stylesheet" href="{{ asset('css/common.css') }}">
         {% endblock %}
     </head>
     <body>
-
         {% block header %}
-            <nav class="navbar">
-                <a class="navbar-brand" href="{{ path('app_homepage') }}">
-                    <img src="{{ asset('images/logo.png') }}" alt="Project Carmeet">
-                </a>
-            </nav>
+            {% include 'shared/includes/_navbar.html.twig' %}
         {% endblock %}
 
         {#TODO: move flashbag_messages to proper position / template #}
@@ -43,7 +37,6 @@
         {% block javascripts %}
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
             <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-            {#            <script src="{{ asset('js/common.js') }}"></script>#}
         {% endblock %}
     </body>
 </html>

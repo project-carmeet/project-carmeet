@@ -1,8 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'security/_security_page.html.twig' %}
 
-{% block title %}Forgot password ;({% endblock %}
+{% set pageTitle = 'Wachtwoord vergeten' %}
 
-{% block body %}
-    <h2>Sowwy, this link is expired ^w^</h2>
-    <a href="{{ path('app_security_forgot_password') }}">Click here to request a new link.</a>
+{% block security_page_content %}
+    <div class="col-12">
+        <h4>Oeps, de link is niet meer geldig.</h4>
+        <p>De link die je hebt gebruikt is helaas niet meer geldig. Maar geen zorgen, je kan gewoon een <a href="{{ path('app_security_forgot_password') }}">nieuwe link aanvragen</a>.</p>
+    </div>
 {% endblock %}

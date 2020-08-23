@@ -11,14 +11,15 @@
 @import "atoms/typography";
 
 // Molecules
-@import "molecules/form-control";
+@import "molecules/alerts";
 @import "molecules/cards";
+@import "molecules/form-control";
 
 // Organisms
 @import "organisms/blocks";
-@import "organisms/jumbotron";
-@import "organisms/navbar";
 @import "organisms/footer";
+@import "organisms/navbar";
+@import "organisms/jumbotron";
 
 body {
   background: $bg-body;

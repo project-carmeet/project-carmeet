@@ -1,24 +1,48 @@
-{% macro card(event) %}
-    <article class="event-card mb-20">
-        <a href="{{ path('app_event_view', {id: event.id}) }}" class="card">
-            <img src="{{ asset('images/hero/hero_xs.jpg') }}" class="card-img-top" alt="{{ event.name }}">
-            <div class="card-body">
-                <h5 class="card-title">{{ event.name }}</h5>
-                <p class="card-text">
-                    {{ event.dateFrom|date('Y-m-d') }}
-                    {{ event.dateFrom|date('H:i') }} / {{ event.dateUntil|date('H:i') }}
-                </p>
-                {% if event.cancelled %}
-                    <p class="card-text" style="color: red">
-                        Event has been cancelled on {{ event.cancellationDate|date('Y-m-d') }}
-                        {% if is_granted(constant('App\\Security\\EventAction::EDIT'), event) %}
-                            If this is not correct, you can contact the administrators to reopen the event.
-                        {% endif %}
-                    </p>
+{% macro card(event, eventLayout, iconColor) %}
+    <a href="{{ path('app_event_view', {id: event.id}) }}" class="card">
+        {#TODO: give it a nice picture#}
+        <img class="card-img-top"
+             src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_173ed81cf56%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_173ed81cf56%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2299.1171875%22%20y%3D%2296.3%22%3EImage%20cap%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+             alt="{{ event.name }}">
+        <span class="card-img-overlay"></span>
+
+        {#TODO: do we really want this, if so, how do we style it?#}
+        {% if event.cancelled %}
+            <p style="color: red; position: absolute; top: 20px; left: 20px; right: 20px;">
+                Event has been cancelled on {{ event.cancellationDate|date('Y-m-d') }}
+                {% if is_granted(constant('App\\Security\\EventAction::EDIT'), event) %}
+                    If this is not correct, you can contact the administrators to reopen the event.
                 {% endif %}
+            </p>
+        {% endif %}
+
+        <div class="card-body">
+            <div class="row">
+                {#TODO: clean all of this up, this is not pretty#}
+                {% if not iconColor %}
+                    {% set iconColor = 'color-secondary' %}
+                {% endif %}
+
+                {% set fullWidthColumn = true %}
+                {% if eventLayout is defined and eventLayout == 1 %}
+                    {% set fullWidthColumn = false %}
+                {% endif %}
+
+                <div class="col-12{% if fullWidthColumn %} col-lg-7{% endif %} ds-flex">
+                    <h5 class="card-title text-uppercase">{{ event.name }}</h5>
+                </div>
+                <div class="col-12{% if fullWidthColumn %} col-lg-5{% endif %}">
+                    <span class="info">
+                        <i class="fas fa-hourglass-half {{ iconColor }}"></i>
+                        {{ event.dateFrom|date('H:i') }} / {{ event.dateUntil|date('H:i') }}
+                    </span>
+                    {#TODO: give me these details#}
+                    <span class="info"><i class="fas fa-map-marked-alt {{ iconColor }}"></i> Rotterdam</span>
+                    <span class="info"><i class="fas fa-car {{ iconColor }}"></i> 650+ cars</span>
+                </div>
             </div>
-        </a>
-    </article>
+        </div>
+    </a>
 {% endmacro %}
 
 {% macro expanded_card(event) %}
